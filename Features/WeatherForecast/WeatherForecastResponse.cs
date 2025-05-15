@@ -2,5 +2,5 @@
 
 public sealed class WeatherForecastResponse
 {
-  public IEnumerable<Domains.WeatherForecast> Weather { get; set; }
+  public IEnumerable<Domain.WeatherForecast> Weather { get; set; }
 }
