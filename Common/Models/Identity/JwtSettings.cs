@@ -1,4 +1,4 @@
-﻿namespace dotnet_qrshop.Common.Models;
+﻿namespace dotnet_qrshop.Common.Models.Identity;
 
 public class JwtSettings
 {

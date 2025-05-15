@@ -1,4 +1,4 @@
-﻿using dotnet_qrshop.Domain;
+﻿using dotnet_qrshop.Entities;
 using dotnet_qrshop.Persistence.Configurations.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

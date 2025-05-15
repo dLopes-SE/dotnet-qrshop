@@ -1,5 +1,4 @@
-﻿using dotnet_qrshop.Domain;
-using Microsoft.AspNetCore.Identity;
+﻿using dotnet_qrshop.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

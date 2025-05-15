@@ -1,4 +1,4 @@
-﻿namespace dotnet_qrshop.Domain;
+﻿namespace dotnet_qrshop.Entities;
 
 public record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
 {

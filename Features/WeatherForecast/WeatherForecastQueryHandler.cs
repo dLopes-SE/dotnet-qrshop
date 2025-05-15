@@ -15,7 +15,7 @@ internal sealed class WeatherForecastQueryHandler : IQueryHandler<WeatherForecas
     var response = new WeatherForecastResponse
     {
       Weather = Enumerable.Range(1, 5).Select(index =>
-        new Domain.WeatherForecast
+        new Entities.WeatherForecast
         (
             DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
             Random.Shared.Next(-20, 55),
