@@ -1,20 +1,37 @@
-﻿using dotnet_qrshop.Abstractions;
+﻿using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Common.Models.Identity;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 
 namespace dotnet_qrshop.Services;
 
 public class AuthService(
   UserManager<ApplicationUser> _userManager, 
   SignInManager<ApplicationUser> _signInManager,
-  IOptions<JwtSettings> jwtSettings) : IAuthService
+  ITokenProvider _tokenProvider) : IAuthService
 {
-  public Task<Result<AuthResponse>> Login(AuthRequest request)
+  public async Task<Result<AuthResponse>> Login(AuthRequest request)
   {
-    throw new NotImplementedException();
+    var user = await _userManager.FindByEmailAsync(request.Email);
+    if (user == null)
+    {
+      return Result.Failure<AuthResponse>(Error.NotFound("User Not Found", "Wrong email or password."));
+    }
+
+    var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+    if (!result.Succeeded)
+    {
+      return Result.Failure<AuthResponse>(Error.Failure("Incorrect password", "Wrong email or password."));
+    }
+
+    return Result.Success(new AuthResponse
+    {
+      Id = user.Id,
+      UserName = user.UserName,
+      Email = user.Email,
+      Token = await _tokenProvider.Create(user),
+    });
   }
 
   public async Task<Result<AuthResponse>> Registration(RegistrationRequest request)

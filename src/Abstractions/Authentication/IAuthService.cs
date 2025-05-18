@@ -1,7 +1,7 @@
 ﻿using dotnet_qrshop.Common.Models.Identity;
 using dotnet_qrshop.Common.Results;
 
-namespace dotnet_qrshop.Abstractions;
+namespace dotnet_qrshop.Abstractions.Authentication;
 
 public interface IAuthService
 {

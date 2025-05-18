@@ -1,8 +1,9 @@
 using Carter;
-using dotnet_qrshop.Abstractions;
+using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Common.Messaging;
 using dotnet_qrshop.Common.Models.Identity;
 using dotnet_qrshop.Entities;
+using dotnet_qrshop.Features.Identity;
 using dotnet_qrshop.Persistence.DbContext;
 using dotnet_qrshop.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,10 +14,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSwaggerGen(options =>
-{
-    options.SwaggerDoc("v1", new() { Title = "qrshop.api", Version = "v1" });
-});
+// OpenAPI
+builder.Services.AddOpenApi();
 
 // Add Carter for endpoint mapping
 builder.Services.AddCarter();
@@ -35,6 +34,7 @@ builder.Services.Scan(scan => scan.FromAssembliesOf(typeof(IQueryHandler<,>))
 
 // Identity
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+
 builder.Services.AddDbContext<UserDbContext>(options =>
 {
   options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
@@ -63,6 +63,7 @@ builder.Services.AddAuthentication(options =>
   };
 });
 
+builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 
@@ -71,8 +72,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-  app.UseSwagger();
-  app.UseSwaggerUI();
+  app.MapOpenApi();
+
+  app.UseSwaggerUI(options =>
+    options.SwaggerEndpoint("/openapi/v1.json", "Swagger")
+  );
 }
 
 app.UseHttpsRedirection();

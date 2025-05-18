@@ -1,15 +1,17 @@
-version: '3.9'
-
 services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: src/Dockerfile
     ports:
       - "8080:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80 
       - ConnectionStrings__Database=Host=db;Port=5432;Database=app_db;Username=postgres;Password=postgres
+      - JwtSettings__Key=19492ac5-15a8-471e-8fde-af76f5996c0a
+      - JwtSettings__Issuer=dotnet-qrshop
+      - JwtSettings__Audience=ApplicationUser
     depends_on:
       - db
 
