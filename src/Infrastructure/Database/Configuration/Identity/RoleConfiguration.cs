@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace dotnet_qrshop.Persistence.Configurations.Identity;
+namespace dotnet_qrshop.Infrastructure.Database.Configuration.Identity;
 
 public class RoleConfiguration : IEntityTypeConfiguration<IdentityRole>
 {

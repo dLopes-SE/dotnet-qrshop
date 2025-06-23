@@ -1,4 +1,4 @@
-﻿using dotnet_qrshop.Common.Messaging;
+﻿using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Results;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 public class SampleQuery : IQuery<string>
 {
-  public string Value { get; set; }
+  public string? Value { get; set; }
 }
 
 public class SampleQueryHandler : IQueryHandler<SampleQuery, string>

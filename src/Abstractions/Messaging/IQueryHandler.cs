@@ -1,6 +1,6 @@
 ﻿using dotnet_qrshop.Common.Results;
 
-namespace dotnet_qrshop.Common.Messaging;
+namespace dotnet_qrshop.Abstractions.Messaging;
 
 public interface IQueryHandler<in TQuery, TResponse>
   where TQuery : IQuery<TResponse>

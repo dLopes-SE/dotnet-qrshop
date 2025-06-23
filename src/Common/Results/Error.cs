@@ -10,12 +10,12 @@ public record Error
 
   public string Code { get; }
   public string Description { get; }
-  public ErrorType ErrorType { get; }
+  public ErrorType Type { get; }
   public Error(string code, string description, ErrorType type)
   {
     Code = code;
     Description = description;
-    ErrorType = type;
+    Type = type;
   }
 
   public static Error Failure(string code, string description) =>

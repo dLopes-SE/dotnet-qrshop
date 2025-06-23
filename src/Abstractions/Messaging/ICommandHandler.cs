@@ -1,6 +1,6 @@
 ﻿using dotnet_qrshop.Common.Results;
 
-namespace dotnet_qrshop.Common.Messaging;
+namespace dotnet_qrshop.Abstractions.Messaging;
 
 public interface ICommandHandler<in TCommand>
   where TCommand : ICommand

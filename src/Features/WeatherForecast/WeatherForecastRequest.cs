@@ -1,4 +1,4 @@
-﻿using dotnet_qrshop.Common.Messaging;
+﻿using dotnet_qrshop.Abstractions.Messaging;
 
 namespace dotnet_qrshop.Features.WeatherForecast;
 

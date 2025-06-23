@@ -1,10 +1,10 @@
 using Carter;
 using dotnet_qrshop.Abstractions.Authentication;
-using dotnet_qrshop.Common.Messaging;
+using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Models.Identity;
 using dotnet_qrshop.Entities;
 using dotnet_qrshop.Features.Identity;
-using dotnet_qrshop.Persistence.DbContext;
+using dotnet_qrshop.Infrastructure.Database.DbContext;
 using dotnet_qrshop.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -35,12 +35,12 @@ builder.Services.Scan(scan => scan.FromAssembliesOf(typeof(IQueryHandler<,>))
 // Identity
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
-builder.Services.AddDbContext<UserDbContext>(options =>
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
   options.UseNpgsql(builder.Configuration.GetConnectionString("Database"));
 });
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-  .AddEntityFrameworkStores<UserDbContext>()
+  .AddEntityFrameworkStores<ApplicationDbContext>()
   .AddDefaultTokenProviders();
 
 // Authentication
@@ -63,6 +63,10 @@ builder.Services.AddAuthentication(options =>
   };
 });
 
+// Authorization
+builder.Services.AddAuthorization();
+
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
@@ -80,6 +84,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapCarter();
 

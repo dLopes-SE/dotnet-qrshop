@@ -1,5 +1,5 @@
 ﻿using dotnet_qrshop.Abstractions.Authentication;
-using dotnet_qrshop.Common.Messaging;
+using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Models.Identity;
 using dotnet_qrshop.Common.Results;
 
