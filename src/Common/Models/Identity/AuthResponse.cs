@@ -1,9 +1,9 @@
-﻿namespace dotnet_qrshop.Common.Models.Identity;
+﻿using dotnet_qrshop.Entities;
 
-public class AuthResponse
+namespace dotnet_qrshop.Common.Models.Identity;
+
+public record AuthResponse (string Id, string Email, string Token)
 {
-  public string Id { get; set; } = string.Empty;
-  public string UserName { get; set; } = string.Empty;
-  public string Email { get; set; } = string.Empty;
-  public string Token { get; set; } = string.Empty;
+  public static AuthResponse Parse(ApplicationUser user, string? token = null) =>
+    new(user.Id, user.Email, token ?? string.Empty);
 }

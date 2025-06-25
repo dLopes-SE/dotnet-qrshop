@@ -5,18 +5,11 @@ namespace dotnet_qrshop.Common.Models.Identity;
 public class RegistrationRequest
 {
   [Required]
-  public string FirstName { get; set; }
-
-  [Required]
-  public string LastName { get; set; }
+  public string Name { get; set; }
 
   [Required]
   [EmailAddress]
   public string Email { get; set; }
-
-  [Required]
-  [MinLength(6)]
-  public string UserName { get; set; }
 
   [Required]
   [MinLength(6)]

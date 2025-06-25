@@ -16,32 +16,25 @@ public class AuthService(
     var user = await _userManager.FindByEmailAsync(request.Email);
     if (user == null)
     {
-      return Result.Failure<AuthResponse>(Error.NotFound("User Not Found", "Wrong email or password."));
+      return Result.Failure<AuthResponse>(Error.Problem("Incorrect email/password", "Wrong email or password."));
     }
 
     var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
     if (!result.Succeeded)
     {
-      return Result.Failure<AuthResponse>(Error.Failure("Incorrect password", "Wrong email or password."));
+      return Result.Failure<AuthResponse>(Error.Problem("Incorrect email/password", "Wrong email or password."));
     }
 
-    return Result.Success(new AuthResponse
-    {
-      Id = user.Id,
-      UserName = user.UserName,
-      Email = user.Email,
-      Token = await _tokenProvider.Create(user),
-    });
+    return Result.Success(AuthResponse.Parse(user, await _tokenProvider.Create(user)));
   }
 
   public async Task<Result<AuthResponse>> Registration(RegistrationRequest request)
   {
     var user = new ApplicationUser
     {
-      FirstName = request.FirstName,
-      LastName = request.LastName,
+      Name = request.Name,
       Email = request.Email,
-      UserName = request.UserName,
+      UserName = request.Email,
       EmailConfirmed = true, // TODO DYLAN: IMPLEMENT EMAIL CONFIRMATION
     };
 
@@ -49,16 +42,11 @@ public class AuthService(
     if (result.Succeeded)
     {
       await _userManager.AddToRoleAsync(user, "User"); // TODO DYLAN: ADD ROLE ENUMERATOR
-      return Result.Success(new AuthResponse
-      {
-        Id = user.Id,
-        Email = user.Email,
-        UserName = user.UserName,
-      });
+      return Result.Success(AuthResponse.Parse(user));
     };
 
     return Result.Failure<AuthResponse>(
-      Error.Failure("", string.Join("\n", result.Errors)) // TODO DYLAN: ADD USER ERRORS STATIC CLASS
+      Error.Problem("", string.Join("\n", result.Errors)) // TODO DYLAN: ADD USER ERRORS STATIC CLASS
     );
   }
 }
