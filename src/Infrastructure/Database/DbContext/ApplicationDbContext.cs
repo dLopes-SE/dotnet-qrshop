@@ -1,4 +1,4 @@
-﻿using dotnet_qrshop.Entities;
+﻿using dotnet_qrshop.Domains;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;

@@ -1,8 +1,9 @@
 using Carter;
 using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
+using dotnet_qrshop.Common.Behaviours;
 using dotnet_qrshop.Common.Models.Identity;
-using dotnet_qrshop.Entities;
+using dotnet_qrshop.Domains;
 using dotnet_qrshop.Features.Identity;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using dotnet_qrshop.Services;
@@ -31,6 +32,10 @@ builder.Services.Scan(scan => scan.FromAssembliesOf(typeof(IQueryHandler<,>))
             .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<,>)), publicOnly: false)
                 .AsImplementedInterfaces()
                 .WithScopedLifetime());
+
+// Decorators
+builder.Services.Decorate(typeof(ICommandHandler<>), typeof(ValidationDecorator.CommandBaseHandler<>));
+builder.Services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationDecorator.CommandHandler<,>));
 
 // Identity
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));

@@ -1,4 +1,4 @@
-﻿using dotnet_qrshop.Entities;
+﻿using dotnet_qrshop.Domains;
 
 namespace dotnet_qrshop.Common.Models.Identity;
 

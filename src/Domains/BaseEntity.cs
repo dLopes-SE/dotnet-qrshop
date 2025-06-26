@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace dotnet_qrshop.Entities;
+namespace dotnet_qrshop.Domains;
 
 public abstract class BaseEntity
 {

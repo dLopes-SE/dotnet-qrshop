@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace dotnet_qrshop.Entities;
+namespace dotnet_qrshop.Domains;
 
 public class ApplicationUser : IdentityUser
 {

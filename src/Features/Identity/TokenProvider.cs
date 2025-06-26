@@ -1,6 +1,6 @@
 ﻿using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Common.Models.Identity;
-using dotnet_qrshop.Entities;
+using dotnet_qrshop.Domains;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

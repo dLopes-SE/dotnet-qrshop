@@ -1,4 +1,4 @@
-﻿using dotnet_qrshop.Entities;
+﻿using dotnet_qrshop.Domains;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
