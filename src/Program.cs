@@ -7,10 +7,12 @@ using dotnet_qrshop.Domains;
 using dotnet_qrshop.Features.Identity;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using dotnet_qrshop.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,8 +36,10 @@ builder.Services.Scan(scan => scan.FromAssembliesOf(typeof(IQueryHandler<,>))
                 .WithScopedLifetime());
 
 // Decorators
-builder.Services.Decorate(typeof(ICommandHandler<>), typeof(ValidationDecorator.CommandBaseHandler<>));
+//builder.Services.Decorate(typeof(ICommandHandler<>), typeof(ValidationDecorator.CommandBaseHandler<>));
 builder.Services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationDecorator.CommandHandler<,>));
+
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
 
 // Identity
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
