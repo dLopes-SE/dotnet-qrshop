@@ -19,7 +19,7 @@ public class AddItemEndpoint : ICarterModule
 
       return result.Match(Results.Ok, CustomResults.Problem);
     })
-      .WithName("AddItem")
-      .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin" });
+      .WithName("AddItem");
+     // .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin" });
   }
 }
