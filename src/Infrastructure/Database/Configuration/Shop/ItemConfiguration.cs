@@ -39,8 +39,8 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
       new Item
       {
         Id = 1,
-        CreatedAt = DateTime.Parse("06/26/2025 13:03:14"),
-        UpdatedAt = DateTime.Parse("06/26/2025 13:03:14"),
+        CreatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
+        UpdatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
         Name = "QRious Code Shirt",
         Slogan = "Scan Me, Surprise Awaits!",
         Description = "Dare to scan and uncover the mystery. This playful QR code t-shirt is perfect for tech lovers, pranksters, and curious minds. Whether it's a joke, a secret message, or a clever link—you decide what hides behind the code. Printed on high-quality cotton for all-day comfort and geeky charm.",
@@ -52,8 +52,8 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
       new Item
       {
         Id = 2,
-        CreatedAt = DateTime.Parse("06/26/2025 13:03:14"),
-        UpdatedAt = DateTime.Parse("06/26/2025 13:03:14"),
+        CreatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
+        UpdatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
         Name = "Backcode Tee",
         Slogan = "Scan My Back!",
         Description = "Turn around and let the QR do the talking. This customizable tee features a large QR code on the back—perfect for sharing your website, social link, message, or even a prank. Ideal for events, promotions, or just sparking curiosity. Clean, bold, and fully customizable to fit your personality or brand.",
@@ -65,8 +65,8 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
       new Item
       {
         Id = 3,
-        CreatedAt = DateTime.Parse("06/26/2025 13:03:14"),
-        UpdatedAt = DateTime.Parse("06/26/2025 13:03:14"),
+        CreatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
+        UpdatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
         Name = "Code Hoodie",
         Slogan = "Scan the Chill",
         Description = "Stay warm while sharing your message—literally. This cozy hoodie features a bold QR code and custom text on the back, making it the ultimate combo of tech and comfort. Perfect for promotions, fun surprises, or just turning heads. Your hoodie, your link, your story.",
@@ -77,8 +77,8 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
       new Item
       {
         Id = 4,
-        CreatedAt = DateTime.Parse("06/26/2025 13:03:14"),
-        UpdatedAt = DateTime.Parse("06/26/2025 13:03:14"),
+        CreatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
+        UpdatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
         Name = "I Told Ya",
         Slogan = "Proof. Style. Delivered.",
         Description = "Make a bold statement from the front and back. This charcoal-gray tee says it all—“I TOLD YA” in thick block letters on the chest, and a scannable QR code on the back for that mysterious, tech-meets-style twist. Whether you're proving a point or just love minimalist streetwear with a secret, this shirt delivers. Perfect for casual fits with a viral edge.",
@@ -89,8 +89,8 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
       new Item
       {
         Id = 5,
-        CreatedAt = DateTime.Parse("06/26/2025 13:03:14"),
-        UpdatedAt = DateTime.Parse("06/26/2025 13:03:14"),
+        CreatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
+        UpdatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
         Name = "Free WiFi Zon",
         Slogan = "Scan & Surf Instantly",
         Description = "Make your space more welcoming and connected! This vibrant \"YES, WE HAVE FREE WIFI\" sign comes with a scannable QR code so guests can instantly access your WiFi—no awkward questions or password-sharing needed. Ideal for cafes, salons, waiting rooms, or home setups. Eye-catching and practical.",
