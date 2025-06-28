@@ -19,7 +19,8 @@ public class TokenProvider(UserManager<ApplicationUser> _userManager,
     var userClaims = await _userManager.GetClaimsAsync(user);
     var roles = await _userManager.GetRolesAsync(user);
 
-    var userRoles = roles.Select(r => new Claim(ClaimTypes.Role, r));
+    var userRole = roles.Select(r => new Claim("role", r))
+                        .FirstOrDefault();
 
     var claims = new[]
     {
@@ -29,7 +30,7 @@ public class TokenProvider(UserManager<ApplicationUser> _userManager,
         new Claim("uid", user.Id)
       }
     .Union(userClaims)
-    .Union(userRoles);
+    .Append(userRole);
 
     var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
 
