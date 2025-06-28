@@ -11,6 +11,10 @@ public class Item : BaseEntity
   public string Image { get; set; }
   public ShopItemTypeEnum Type { get; set; }
   public bool IsFeaturedItem { get; set; }
+  /// <summary>
+  /// Dollar
+  /// </summary>
+  public double Price { get; set; }
 
   public static explicit operator Item(ItemRequest request) =>
     new()
@@ -20,5 +24,6 @@ public class Item : BaseEntity
       Description = request.Description,
       Image = request.Image,
       IsFeaturedItem = request.IsFeaturedItem,
+      Price = request.Price,
     };
 }

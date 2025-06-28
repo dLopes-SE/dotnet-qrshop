@@ -10,7 +10,7 @@ public class ListItemsEndpoint : ICarterModule
 {
   public void AddRoutes(IEndpointRouteBuilder app)
   {
-    app.MapGet("item", async (
+    app.MapGet("shop/item", async (
       IQueryHandler<ListItemsQuery, IEnumerable<ItemDto>> handler,
       CancellationToken cancellationToken,
       [FromQuery] bool featuredItemsOnly = false) =>
