@@ -1,6 +1,6 @@
 ﻿namespace dotnet_qrshop.Common.Enums;
 
-public enum ShopItemTypeEnum
+public enum ShopItemCategoryEnum
 {
   None,
   TShirt,

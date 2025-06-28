@@ -9,7 +9,7 @@ public class Item : BaseEntity
   public string Slogan { get; set; }
   public string Description { get; set; }
   public string Image { get; set; }
-  public ShopItemTypeEnum Type { get; set; }
+  public ShopItemCategoryEnum Category { get; set; }
   public bool IsFeaturedItem { get; set; }
   /// <summary>
   /// Dollar
