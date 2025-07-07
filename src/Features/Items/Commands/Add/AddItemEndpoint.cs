@@ -2,15 +2,14 @@
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Results;
-using Microsoft.AspNetCore.Authorization;
 
-namespace dotnet_qrshop.Features.Items.Commands.AddItem;
+namespace dotnet_qrshop.Features.Items.Commands.Add;
 
 public class AddItemEndpoint : ICarterModule
 {
   public void AddRoutes(IEndpointRouteBuilder app)
   {
-    app.MapPost("item", async (
+    app.MapPost("shop/item", async (
       ItemRequest request,
       ICommandHandler<AddItemCommand, ItemDto> handler,
       CancellationToken cancellationToken) =>

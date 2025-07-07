@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace dotnet_qrshop.Features.Items.Commands.AddItem;
+namespace dotnet_qrshop.Features.Items.Commands.Add;
 
 internal sealed class AddItemValidator : AbstractValidator<AddItemCommand>
 {

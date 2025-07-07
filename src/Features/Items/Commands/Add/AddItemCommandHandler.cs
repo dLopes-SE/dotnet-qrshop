@@ -3,7 +3,7 @@ using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Domains;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 
-namespace dotnet_qrshop.Features.Items.Commands.AddItem;
+namespace dotnet_qrshop.Features.Items.Commands.Add;
 
 public class AddItemCommandHandler(
   ApplicationDbContext _dbContext) : ICommandHandler<AddItemCommand, ItemDto>

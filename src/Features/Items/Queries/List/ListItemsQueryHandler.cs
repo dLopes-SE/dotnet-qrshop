@@ -3,7 +3,7 @@ using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnet_qrshop.Features.Items.Queries.ListItems;
+namespace dotnet_qrshop.Features.Items.Queries.List;
 
 public class ListItemsQueryHandler(
   ApplicationDbContext _dbContext) : IQueryHandler<ListItemsQuery, IEnumerable<ItemDto>>

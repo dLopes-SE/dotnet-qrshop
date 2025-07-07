@@ -4,7 +4,7 @@ using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Results;
 using Microsoft.AspNetCore.Mvc;
 
-namespace dotnet_qrshop.Features.Items.Queries.ListItems;
+namespace dotnet_qrshop.Features.Items.Queries.List;
 
 public class ListItemsEndpoint : ICarterModule
 {

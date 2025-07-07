@@ -3,13 +3,13 @@ using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Results;
 
-namespace dotnet_qrshop.Features.Items.Commands.DeleteItem
+namespace dotnet_qrshop.Features.Items.Commands.Delete
 {
   public class DeleteItemEndpoint : ICarterModule
   {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-      app.MapDelete("item/{id}", async (
+      app.MapDelete("shop/item/{id}", async (
         int id,
         ICommandHandler<DeleteItemCommand> handler,
         CancellationToken cancellationToken) =>

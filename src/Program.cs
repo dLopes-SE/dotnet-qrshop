@@ -1,4 +1,4 @@
-using Carter;
+﻿using Carter;
 using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Behaviours;
@@ -79,6 +79,17 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+builder.Services.AddCors(options =>
+{
+  options.AddPolicy("AllowAll", policy =>
+  {
+    policy
+        .WithOrigins("http://localhost:3000") 
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+  });
+});
 
 var app = builder.Build();
 
@@ -94,9 +105,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowAll");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapCarter();
+
 
 app.Run();

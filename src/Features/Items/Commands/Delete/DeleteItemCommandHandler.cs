@@ -3,7 +3,7 @@ using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Microsoft.EntityFrameworkCore;
 
-namespace dotnet_qrshop.Features.Items.Commands.DeleteItem;
+namespace dotnet_qrshop.Features.Items.Commands.Delete;
 
 public class DeleteItemCommandHandler(
   ApplicationDbContext _dbContext) : ICommandHandler<DeleteItemCommand>
