@@ -16,6 +16,8 @@ public class Item : BaseEntity
   /// </summary>
   public double Price { get; set; }
 
+  public ICollection<CartItem> CartItems { get; set; } = [];
+
   public static explicit operator Item(ItemRequest request) =>
     new()
     {

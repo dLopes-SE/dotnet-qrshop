@@ -39,6 +39,10 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
       .HasDefaultValue(false)
       .HasColumnName("is_featured_item");
 
+    builder.HasMany(i => i.CartItems)
+      .WithOne(ci => ci.Item)
+      .HasForeignKey(ci => ci.ItemId);
+
     builder.HasData(
       new Item
       {
