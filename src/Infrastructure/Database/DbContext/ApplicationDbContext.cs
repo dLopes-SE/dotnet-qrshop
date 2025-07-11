@@ -9,6 +9,8 @@ namespace dotnet_qrshop.Infrastructure.Database.DbContext;
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
 {
   public DbSet<Item> Items { get; set; }
+  public DbSet<Cart> Cart {  get; set; }
+  public DbSet <CartItem> CartItems { get; set; }
   protected override void OnModelCreating(ModelBuilder builder)
   {
     builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -5,6 +5,7 @@ using dotnet_qrshop.Common.Behaviours;
 using dotnet_qrshop.Common.Models.Identity;
 using dotnet_qrshop.Domains;
 using dotnet_qrshop.Features.Identity;
+using dotnet_qrshop.Infrastructure.Authentication;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using dotnet_qrshop.Services;
 using FluentValidation;
@@ -76,7 +77,9 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUserContext, UserContext>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddCors(options =>
