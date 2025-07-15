@@ -1,11 +1,14 @@
 ﻿using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
+using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Models.Identity;
 using dotnet_qrshop.Common.Results;
 
 namespace dotnet_qrshop.Features.Identity.Login;
 
-public class LoginUserCommandHandler(IAuthService _authService)
+public class LoginUserCommandHandler(
+  IHttpContextAccessor httpContextAccessor,
+  IAuthService _authService)
   : ICommandHandler<LoginUserCommand, AuthResponse>
 {
   public async Task<Result<AuthResponse>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
@@ -15,6 +18,10 @@ public class LoginUserCommandHandler(IAuthService _authService)
     {
       return result;
     }
+
+    // Set token cookie
+    CookiesExtensions.SetCookie(httpContextAccessor.HttpContext?.Response, "auth", result.Value.Token, TimeSpan.FromDays(1));
+
     return result;
   }
 }

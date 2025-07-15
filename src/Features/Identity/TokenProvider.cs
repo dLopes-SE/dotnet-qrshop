@@ -40,7 +40,7 @@ public class TokenProvider(UserManager<ApplicationUser> _userManager,
       issuer: _jwtSettings.Issuer,
       audience: _jwtSettings.Audience,
       claims: claims,
-      expires: DateTime.Now.AddMinutes(_jwtSettings.ExpirationInMinutes),
+      expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpirationInMinutes),
       signingCredentials: signingCredentials);
 
     return new JwtSecurityTokenHandler().WriteToken(token);

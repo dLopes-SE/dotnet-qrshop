@@ -2,6 +2,7 @@
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Results;
+using Microsoft.AspNetCore.Authorization;
 
 namespace dotnet_qrshop.Features.Items.Commands.Add;
 
@@ -18,7 +19,7 @@ public class AddItemEndpoint : ICarterModule
 
       return result.Match(Results.Ok, CustomResults.Problem);
     })
-      .WithName("AddItem");
-     // .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin" });
+      .WithName("AddItem")
+      .RequireAuthorization(new AuthorizeAttribute { Roles = "Admin" });
   }
 }

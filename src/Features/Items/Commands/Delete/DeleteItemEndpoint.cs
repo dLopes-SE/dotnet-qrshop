@@ -2,6 +2,7 @@
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Results;
+using Microsoft.AspNetCore.Authorization;
 
 namespace dotnet_qrshop.Features.Items.Commands.Delete
 {
@@ -18,7 +19,8 @@ namespace dotnet_qrshop.Features.Items.Commands.Delete
 
         return result.Match(() => Results.Ok(), CustomResults.Problem);
       })
-        .WithName("DeleteItem");
+        .WithName("DeleteItem")
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "Administrator" });
     }
   }
 }
