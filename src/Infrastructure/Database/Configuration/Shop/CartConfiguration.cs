@@ -16,7 +16,6 @@ public class CartConfiguration : IEntityTypeConfiguration<Cart>
     builder.HasIndex(c => c.Id);
 
     builder.Property(c => c.VersionHash)
-      .IsRequired()
       .HasMaxLength(128);
 
     builder.HasOne(c => c.User)
