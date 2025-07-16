@@ -1,4 +1,6 @@
-﻿using dotnet_qrshop.Features.Carts.Hashing;
+﻿using dotnet_qrshop.Common.Models;
+using dotnet_qrshop.Features.Carts.Hashing;
+using dotnet_qrshop.Features.Items.Commands.Add;
 using System.Text.Json.Serialization;
 
 namespace dotnet_qrshop.Domains;
@@ -18,9 +20,16 @@ public class Cart : BaseEntity
 
   public Cart(ApplicationUser user) => UserId = user.Id;
 
+  #region CartItems
+  public void AddItem(CartItem item) => _items.Add(item);
+  #endregion
+
+  #region HashVersion
   public void UpdateHashVersion()
   {
-    var payload = new CartVersionPayload(Id, _items);
+    var itemDtos = _items.Select(i => new CartItemDto(i.Id, i.ItemId, i.Item.Name, i.Item.Image, i.Quantity));
+    var payload = new CartVersionPayload(Id, itemDtos);
     VersionHash = CartHashGenerator.Generate(payload);
   }
+  #endregion
 }

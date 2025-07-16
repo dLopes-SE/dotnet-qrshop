@@ -8,11 +8,12 @@ public static class CartHashSerializer
   public static string SerializeDeterministically(CartVersionPayload payload)
   {
     var orderedPayload = new CartVersionPayload(
-            payload.CartId,
-            [.. payload.Items
-                .OrderBy(i => i.Id)
-                .ThenBy(i => i.ItemId)]
-        );
+      payload.CartId,
+      [.. payload.Items
+          .OrderBy(i => i.Id)
+          .ThenBy(i => i.ItemId)
+          .ThenBy(i => i.Quantity)]
+    );
 
     return JsonSerializer.Serialize(orderedPayload, _options);
   }

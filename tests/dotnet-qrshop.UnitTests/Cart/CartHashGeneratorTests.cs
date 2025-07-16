@@ -1,7 +1,5 @@
-﻿using dotnet_qrshop.Features.Carts;
+﻿using dotnet_qrshop.Common.Models;
 using dotnet_qrshop.Features.Carts.Hashing;
-using System.Collections.Generic;
-using Xunit;
 
 public class CartHashGeneratorTests
 {
@@ -13,9 +11,9 @@ public class CartHashGeneratorTests
   {
     var items = new[]
     {
-            new CartItemDto(1, 100, "Item A", "image.png", 2),
-            new CartItemDto(2, 101, "Item B", "image2.png", 1)
-        };
+      new CartItemDto(1, 100, "Item A", "image.png", 2),
+      new CartItemDto(2, 101, "Item B", "image2.png", 1)
+    };
 
     var payload1 = CreatePayload(items);
     var payload2 = CreatePayload(items);
@@ -31,15 +29,15 @@ public class CartHashGeneratorTests
   {
     var items1 = new[]
     {
-            new CartItemDto(1, 100, "Item A", "image.png", 2),
-            new CartItemDto(2, 101, "Item B", "image2.png", 1)
-        };
+      new CartItemDto(1, 100, "Item A", "image.png", 2),
+      new CartItemDto(2, 101, "Item B", "image2.png", 1)
+    };
 
     var items2 = new[]
     {
-            new CartItemDto(2, 101, "Item B", "image2.png", 1),
-            new CartItemDto(1, 100, "Item A", "image.png", 2)
-        };
+      new CartItemDto(2, 101, "Item B", "image2.png", 1),
+      new CartItemDto(1, 100, "Item A", "image.png", 2)
+    };
 
     var payload1 = CreatePayload(items1);
     var payload2 = CreatePayload(items2);
@@ -55,15 +53,15 @@ public class CartHashGeneratorTests
   {
     var items1 = new[]
     {
-            new CartItemDto(1, 100, "Item A", "image.png", 2),
-            new CartItemDto(2, 101, "Item B", "image2.png", 1)
-        };
+      new CartItemDto(1, 100, "Item A", "image.png", 2),
+      new CartItemDto(2, 101, "Item B", "image2.png", 1)
+    };
 
     var items2 = new[]
     {
-            new CartItemDto(1, 100, "Item A", "image.png", 3), // quantity changed
-            new CartItemDto(2, 101, "Item B", "image2.png", 1)
-        };
+      new CartItemDto(1, 100, "Item A", "image.png", 3), // quantity changed
+      new CartItemDto(2, 101, "Item B", "image2.png", 1)
+    };
 
     var payload1 = CreatePayload(items1);
     var payload2 = CreatePayload(items2);
