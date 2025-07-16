@@ -1,3 +1,5 @@
-﻿namespace dotnet_qrshop.Features.Carts.Hashing;
+﻿using dotnet_qrshop.Domains;
 
-public record CartVersionPayload(int CartId, IEnumerable<CartItemDto> Items);
+namespace dotnet_qrshop.Features.Carts.Hashing;
+
+public record CartVersionPayload(int CartId, IEnumerable<CartItem> Items);

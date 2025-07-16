@@ -2,7 +2,6 @@
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Results;
-using Microsoft.AspNetCore.Http;
 
 namespace dotnet_qrshop.Features.Carts.Queries.Get;
 

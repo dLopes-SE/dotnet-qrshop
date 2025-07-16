@@ -23,24 +23,6 @@ public class GetCartQueryHandler(
 
     if (cart is null)
     {
-      var user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == _userContext.UserId);
-      if (user is null)
-      {
-        return Result.Failure<IEnumerable<CartItemDto>>(Error.Failure("Internal error", "Error getting cart, please try again or contact the support"));
-      }
-
-      cart = new(user);
-      await _dbContext.AddAsync(cart, cancellationToken);
-      cart.SetVersionHash("123");
-      await _dbContext.SaveChangesAsync(cancellationToken);
-
-      // Generate versionHash
-      cart.SetVersionHash(CartHashGenerator.Generate(new CartVersionPayload(cart.Id, [])));
-      await _dbContext.SaveChangesAsync(cancellationToken);
-    }
-
-    if (cart is null)
-    {
       // TODO DYLAN: Log error here
       return Result.Failure<IEnumerable<CartItemDto>>(Error.Failure("Internal error", "Error getting cart, please try again or contact the support"));
     }
