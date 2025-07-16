@@ -49,4 +49,10 @@ public class AuthService(
       Error.Problem("", string.Join("\n", result.Errors)) // TODO DYLAN: ADD USER ERRORS STATIC CLASS
     );
   }
+
+  public async Task<Result> Logout()
+  {
+    await _signInManager.SignOutAsync();
+    return Result.Success(); 
+  }
 }
