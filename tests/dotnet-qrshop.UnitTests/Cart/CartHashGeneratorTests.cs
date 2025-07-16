@@ -1,5 +1,5 @@
-﻿using dotnet_qrshop.Common.Models;
-using dotnet_qrshop.Features.Carts.Hashing;
+﻿using dotnet_qrshop.Common.Hashing.CartHashVersion;
+using dotnet_qrshop.Common.Models;
 
 public class CartHashGeneratorTests
 {

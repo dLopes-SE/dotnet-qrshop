@@ -1,6 +1,6 @@
-﻿using dotnet_qrshop.Common.Models;
-using dotnet_qrshop.Features.Carts.Hashing;
-using dotnet_qrshop.Features.Items.Commands.Add;
+﻿using dotnet_qrshop.Common.Hashing;
+using dotnet_qrshop.Common.Hashing.CartHashVersion;
+using dotnet_qrshop.Common.Models;
 using System.Text.Json.Serialization;
 
 namespace dotnet_qrshop.Domains;
