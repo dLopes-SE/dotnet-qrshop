@@ -10,9 +10,7 @@ public static class CookiesExtensions
         HttpOnly = true,
         Secure = true,
         SameSite = SameSiteMode.None,
-        MaxAge = lifetime ?? TimeSpan.FromDays(7),
-        Domain = "localhost",
-        Path = "/"
+        MaxAge = lifetime ?? TimeSpan.FromDays(7)
       }
     );
   }
