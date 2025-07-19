@@ -11,7 +11,7 @@ public class GetItemEndpoint : ICarterModule
   {
     app.MapGet("shop/item/{id}", async (
       int id,
-      IQueryHandler<GetItemQuery, ItemDto> handler,
+      IQueryHandler<GetItemQuery, GetItemDto> handler,
       CancellationToken cancellationToken) =>
     {
       var result = await handler.Handle(new GetItemQuery(id), cancellationToken);
