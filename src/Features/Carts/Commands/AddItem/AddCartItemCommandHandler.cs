@@ -18,24 +18,47 @@ namespace dotnet_qrshop.Features.Carts.Commands.AddItem
       if (cart is null)
       {
         // TODO DYLAN: Log error here
-        return Result.Failure<CartItemDto>(Error.Failure("Cart is null", "Error getting cart, please try again or contact the support"));
+        return Result.Failure<CartItemDto>(Error.Failure("Cart is null", "Error adding item to cart, please try again or contact the support"));
       }
+      using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
 
-      // Add item
-      var cartItem = (CartItem)command.request;
-      cart.AddItem(cartItem);
-
-      // Update cart version hash
-      cart.UpdateHashVersion();
-      
-      var insertResult = await _dbContext.SaveChangesAsync(cancellationToken);
-      if (insertResult <= 0)
+      try
       {
-        // TODO Dylan: LOG ERROR HERE
-        return Result.Failure<CartItemDto>(Error.Failure("Error inserting item", "Error getting cart, please try again or contact the support"));
-      }
+        // Add item
+        var cartItem = (CartItem)command.request;
+        cart.AddItem(cartItem);
 
-      return Result.Success((CartItemDto)cartItem);
+        var result = await _dbContext.SaveChangesAsync(cancellationToken);
+        if (result <= 0)
+        {
+          return Result.Failure<CartItemDto>(Error.Failure("Error inserting item", "Error adding item to cart, please try again or contact the support"));
+        }
+
+        // Load the item after insert
+        await _dbContext.Entry(cartItem)
+          .Reference(ci => ci.Item)
+          .LoadAsync(cancellationToken);
+
+        // Update cart version hash
+        cart.UpdateHashVersion();
+
+        result = await _dbContext.SaveChangesAsync(cancellationToken);
+        if (result <= 0)
+        {
+          await transaction.RollbackAsync(cancellationToken);
+          return Result.Failure<CartItemDto>(Error.Failure("Error updating version", "Error adding item to cart, please try again or contact the support"));
+        }
+
+        await transaction.CommitAsync(cancellationToken);
+
+        return Result.Success((CartItemDto)cartItem);
+      }
+      catch (Exception ex)
+      {
+        await transaction.RollbackAsync(cancellationToken);
+        // Log error
+        return Result.Failure<CartItemDto>(Error.Failure("Unexpected error occurred", "Error adding item to cart, please try again or contact the support"));
+      }
     }
   }
 }

@@ -10,7 +10,7 @@ namespace dotnet_qrshop.Features.Carts.Commands.AddItem
   {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-      app.MapPost("cart/item", async (
+      app.MapPost("shop/cart", async (
         CartItemRequest request,
         ICommandHandler<AddCartItemCommand, CartItemDto> handler,
         CancellationToken cancellationToken) =>
