@@ -60,32 +60,6 @@ builder.Services.AddAuthentication(options =>
   options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(o =>
 {
-  o.Events = new JwtBearerEvents
-  {
-    OnMessageReceived = context =>
-    {
-      // Check cookie instead of header
-      var accessToken = context.Request.Cookies["auth"];
-
-      if (!string.IsNullOrEmpty(accessToken))
-      {
-        context.Token = accessToken;
-      }
-
-      return Task.CompletedTask;
-    },
-    OnAuthenticationFailed = context =>
-    {
-      Console.WriteLine("Authentication failed: " + context.Exception.Message);
-      return Task.CompletedTask;
-    },
-    OnTokenValidated = context =>
-    {
-      Console.WriteLine("Token validated for: " + context.Principal.Identity.Name);
-      return Task.CompletedTask;
-    }
-  };
-
   o.TokenValidationParameters = new TokenValidationParameters
   {
     ValidateIssuerSigningKey = true,

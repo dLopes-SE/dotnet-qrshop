@@ -19,9 +19,6 @@ public class LoginUserCommandHandler(
       return result;
     }
 
-    // Set token cookie
-    CookiesExtensions.SetCookie(httpContextAccessor.HttpContext?.Response, "auth", result.Value.Token, TimeSpan.FromDays(1));
-
     return result;
   }
 }

@@ -22,8 +22,6 @@ public class LogoutUserCommandHandler(
       return Result.Success();
     }
 
-    httpContext.Response.DeleteCookie("auth");
-
     return await _authService.Logout();
   }
 }
