@@ -12,7 +12,7 @@ namespace dotnet_qrshop.Features.Carts.Commands.AddItem
     {
       app.MapPost("shop/cart", async (
         CartItemRequest request,
-        ICommandHandler<AddCartItemCommand, CartItemDto> handler,
+        ICommandHandler<AddCartItemCommand, int> handler,
         CancellationToken cancellationToken) =>
       {
         var result = await handler.Handle((AddCartItemCommand)request, cancellationToken);

@@ -7,7 +7,6 @@ using dotnet_qrshop.Common.Results;
 namespace dotnet_qrshop.Features.Identity.Login;
 
 public class LoginUserCommandHandler(
-  IHttpContextAccessor httpContextAccessor,
   IAuthService _authService)
   : ICommandHandler<LoginUserCommand, AuthResponse>
 {
