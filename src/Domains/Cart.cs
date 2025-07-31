@@ -14,7 +14,7 @@ public class Cart : BaseEntity
   public IReadOnlyList<CartItem> Items => _items.AsReadOnly();
   private readonly List<CartItem> _items = [];
 
-  public string VersionHash { get; set; } = null;
+  public string VersionHash { get; set; } = string.Empty;
 
   public Cart() { }
 
@@ -22,6 +22,7 @@ public class Cart : BaseEntity
 
   #region CartItems
   public void AddItem(CartItem item) => _items.Add(item);
+  public void UpdateItem(int cartItemId, int quantity) => _items.FirstOrDefault(ci => ci.Id == cartItemId)?.UpdateQuantity(quantity);
   #endregion
 
   #region HashVersion

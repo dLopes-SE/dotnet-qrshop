@@ -41,6 +41,6 @@ public class GetItemQueryHandler(
         ?? new CartItemDetails(null, 0);
     }
 
-    return Result.Success(GetItemDto.Parse((ItemDto)item, cartItem.CartItemId, cartItem.Quantity));
+    return Result.Success(GetItemDto.Parse((ItemDto)item, cartItem.Id, cartItem.Quantity));
   }
 }
