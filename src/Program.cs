@@ -21,7 +21,6 @@ var builder = WebApplication.CreateBuilder(args);
 // OpenAPI
 builder.Services.AddOpenApi();
 
-// Add Carter for endpoint mapping
 builder.Services.AddCarter();
 
 // Add Custom Mediator DI
@@ -37,10 +36,10 @@ builder.Services.Scan(scan => scan.FromAssembliesOf(typeof(IQueryHandler<,>))
                 .WithScopedLifetime());
 
 // Decorators
-//builder.Services.Decorate(typeof(ICommandHandler<>), typeof(ValidationDecorator.CommandBaseHandler<>));
+builder.Services.Decorate(typeof(ICommandHandler<>), typeof(ValidationDecorator.CommandBaseHandler<>));
 builder.Services.Decorate(typeof(ICommandHandler<,>), typeof(ValidationDecorator.CommandHandler<,>));
 
-//builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
+builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true, lifetime: ServiceLifetime.Scoped);
 
 // Identity
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));

@@ -14,6 +14,7 @@ public class UpdateCartItemCommandHandler(
   {
     var cart = await _dbContext.Cart
       .Include(c => c.Items)
+        .ThenInclude(ci => ci.Item)
       .FirstOrDefaultAsync(c => c.UserId == _userContext.UserId, cancellationToken);
 
     if (cart is null)
