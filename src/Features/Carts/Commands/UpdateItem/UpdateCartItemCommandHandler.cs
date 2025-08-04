@@ -23,6 +23,12 @@ public class UpdateCartItemCommandHandler(
       return Result.Failure(Error.Failure("Cart is null", "Error updating item to cart, please try again or contact the support"));
     }
 
+
+    if (!cart.Items.Any(i => i.Id == command.CartItem.Id))
+    {
+      return Result.Failure(Error.NotFound("CartItem not found", "Error updating item to cart, please try again or contact the support"));
+    }
+
     cart.UpdateItem(command.CartItem.Id ?? 0, command.CartItem.Quantity);
     cart.UpdateHashVersion();
 
@@ -35,4 +41,3 @@ public class UpdateCartItemCommandHandler(
     return Result.Success();
   }
 }
-

@@ -23,6 +23,7 @@ public class Cart : BaseEntity
   #region CartItems
   public void AddItem(CartItem item) => _items.Add(item);
   public void UpdateItem(int cartItemId, int quantity) => _items.FirstOrDefault(ci => ci.Id == cartItemId)?.UpdateQuantity(quantity);
+  public void RemoveItem(CartItem item) => _items.Remove(item);
   #endregion
 
   #region HashVersion
