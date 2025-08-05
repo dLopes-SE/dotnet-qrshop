@@ -11,7 +11,7 @@ public class GetCartEndpoint : ICarterModule
 {
   public void AddRoutes(IEndpointRouteBuilder app)
   {
-    app.MapGet("cart", async (
+    app.MapGet("shop/cart", async (
       HttpContext _context,
       IQueryHandler<GetCartQuery, CartDto> handler, 
       CancellationToken cancellationToken,

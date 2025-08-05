@@ -17,11 +17,13 @@ public class GetCartQueryHandler(
     var cart = await _dbContext.Cart
       .AsNoTracking()
       .Where(c => c.UserId == _userContext.UserId)
+      .Include(c => c.Items)
+        .ThenInclude(ci => ci.Item)
       .Select(c => new CartDto
         (
           c.Items.Sum(ci => ci.Quantity),
           c.Items.Sum(ci => ci.Quantity * ci.Item.Price),
-          (query.IsCartPreview 
+          (query.IsCartPreview
           ? c.Items
               .OrderByDescending(ci => ci.Id)
               .Take(CART_PREVIEW_ITEMS_NO)
