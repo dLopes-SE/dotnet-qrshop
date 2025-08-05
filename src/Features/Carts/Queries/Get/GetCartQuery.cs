@@ -1,6 +1,5 @@
 ﻿using dotnet_qrshop.Abstractions.Messaging;
-using dotnet_qrshop.Common.Models;
 
 namespace dotnet_qrshop.Features.Carts.Queries.Get;
 
-public sealed record GetCartQuery : IQuery<IEnumerable<CartItemDto>>;
+public sealed record GetCartQuery(bool IsCartPreview) : IQuery<CartDto>;

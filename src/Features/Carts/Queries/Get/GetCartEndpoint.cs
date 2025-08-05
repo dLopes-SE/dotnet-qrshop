@@ -3,6 +3,7 @@ using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Models;
 using dotnet_qrshop.Common.Results;
+using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_qrshop.Features.Carts.Queries.Get;
 
@@ -12,14 +13,15 @@ public class GetCartEndpoint : ICarterModule
   {
     app.MapGet("cart", async (
       HttpContext _context,
-      IQueryHandler<GetCartQuery, IEnumerable<CartItemDto>> handler, 
-      CancellationToken cancellationToken) =>
+      IQueryHandler<GetCartQuery, CartDto> handler, 
+      CancellationToken cancellationToken,
+      [FromQuery] bool isCartPreview = false) =>
     {
       var cartHash = _context.Request.Cookies["cart_hash"];
 
-      var result = await handler.Handle(new GetCartQuery(), cancellationToken);
+      var result = await handler.Handle(new GetCartQuery(isCartPreview), cancellationToken);
 
-      if (result.IsSuccess && !result.Value.Any())
+      if (result.IsSuccess && result.Value.Quantity == 0)
       {
         return Results.NoContent();
       }

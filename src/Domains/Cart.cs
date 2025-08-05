@@ -1,5 +1,4 @@
-﻿using dotnet_qrshop.Common.Hashing;
-using dotnet_qrshop.Common.Hashing.CartHashVersion;
+﻿using dotnet_qrshop.Common.Hashing.CartHashVersion;
 using dotnet_qrshop.Common.Models;
 using System.Text.Json.Serialization;
 

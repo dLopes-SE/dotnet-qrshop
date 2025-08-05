@@ -9,22 +9,34 @@ namespace dotnet_qrshop.Features.Carts.Queries.Get;
 
 public class GetCartQueryHandler(
   IUserContext _userContext,
-  ApplicationDbContext _dbContext) : IQueryHandler<GetCartQuery, IEnumerable<CartItemDto>>
+  ApplicationDbContext _dbContext) : IQueryHandler<GetCartQuery, CartDto>
 {
-  public async Task<Result<IEnumerable<CartItemDto>>> Handle(GetCartQuery query, CancellationToken cancellationToken)
+  private const int CART_PREVIEW_ITEMS_NO = 3;
+  public async Task<Result<CartDto>> Handle(GetCartQuery query, CancellationToken cancellationToken)
   {
     var cart = await _dbContext.Cart
       .AsNoTracking()
-      .Include(c => c.Items)
-        .ThenInclude(ci => ci.Item)
-      .FirstOrDefaultAsync(c => c.UserId == _userContext.UserId, cancellationToken);
+      .Where(c => c.UserId == _userContext.UserId)
+      .Select(c => new CartDto
+        (
+          c.Items.Sum(ci => ci.Quantity),
+          c.Items.Sum(ci => ci.Quantity * ci.Item.Price),
+          (query.IsCartPreview 
+          ? c.Items
+              .OrderByDescending(ci => ci.Id)
+              .Take(CART_PREVIEW_ITEMS_NO)
+              .Select(ci => (CartItemDto)ci)
+          : c.Items.Select(ci => (CartItemDto)ci))
+        )
+      )
+      .FirstOrDefaultAsync(cancellationToken);
 
     if (cart is null)
     {
       // TODO DYLAN: Log error here
-      return Result.Failure<IEnumerable<CartItemDto>>(Error.Failure("Internal error", "Error getting cart, please try again or contact the support"));
+      return Result.Failure<CartDto>(Error.Failure("Internal error", "Error getting cart, please try again or contact the support"));
     }
 
-    return Result.Success(cart.Items.Select(item => (CartItemDto)item));
+    return cart;
   }
 }
