@@ -10,7 +10,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
   public DbSet<Item> Items { get; set; }
   public DbSet<Cart> Cart {  get; set; }
-  public DbSet <CartItem> CartItems { get; set; }
+  public DbSet<CartItem> CartItems { get; set; }
+  public DbSet<Address> Addresses { get; set; }
   protected override void OnModelCreating(ModelBuilder builder)
   {
     builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
