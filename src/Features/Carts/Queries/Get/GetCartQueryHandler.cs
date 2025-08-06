@@ -28,7 +28,7 @@ public class GetCartQueryHandler(
               .OrderByDescending(ci => ci.Id)
               .Take(CART_PREVIEW_ITEMS_NO)
               .Select(ci => (CartItemDto)ci)
-          : c.Items.Select(ci => (CartItemDto)ci))
+          : c.Items.Select(ci => (CartItemDetailsDto)ci))
         )
       )
       .FirstOrDefaultAsync(cancellationToken);
