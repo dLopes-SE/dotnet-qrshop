@@ -1,6 +1,6 @@
 ﻿using dotnet_qrshop.Domains;
 
-namespace dotnet_qrshop.Features.Addresses;
+namespace dotnet_qrshop.Common.Models;
 
 public record AddressDto (int Id,
   string FullName,

@@ -1,5 +1,6 @@
 ﻿using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
+using dotnet_qrshop.Common.Models;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Microsoft.EntityFrameworkCore;
