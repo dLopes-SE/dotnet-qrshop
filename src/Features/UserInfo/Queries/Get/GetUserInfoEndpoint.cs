@@ -9,7 +9,7 @@ public class GetUserInfoEndpoint : ICarterModule
 {
   public void AddRoutes(IEndpointRouteBuilder app)
   {
-    app.MapGet("userinfo", async (
+    app.MapGet("user/info", async (
       IQueryHandler<GetUserInfoQuery, UserInfoDto> handler,
       CancellationToken cancellationToken) =>
     {
