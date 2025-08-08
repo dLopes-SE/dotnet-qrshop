@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_qrshop.Features.Carts.Commands.AddItem;
 
-internal sealed class AddCartItemValidator : AbstractValidator<CartItemRequest>
+internal sealed class AddCartItemValidator : AbstractValidator<AddCartItemCommand>
 {
   public AddCartItemValidator()
   {
-    RuleFor(i => i.itemId)
+    RuleFor(i => i.request.itemId)
       .NotNull()
       .WithMessage("ItemId is required.");
 
-    RuleFor(i => i.Quantity)
+    RuleFor(i => i.request.Quantity)
       .NotNull()
       .WithMessage("Quantity is required.");
   }

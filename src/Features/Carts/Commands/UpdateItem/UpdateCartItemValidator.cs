@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_qrshop.Features.Carts.Commands.UpdateItem;
 
-internal sealed class UpdateCartItemValidator : AbstractValidator<CartItemDetails>
+internal sealed class UpdateCartItemValidator : AbstractValidator<UpdateCartItemCommand>
 {
   public UpdateCartItemValidator()
   {
-    RuleFor(i => i.Quantity)
+    RuleFor(i => i.CartItem.Quantity)
       .NotNull()
       .InclusiveBetween(1, 99)
       .WithMessage("Quantity is required. Tip: value between 1-99.");
