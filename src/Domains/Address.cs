@@ -8,7 +8,7 @@ namespace dotnet_qrshop.Domains
     public ApplicationUser User { get; private set; }
 
     public string FullName { get; private set; }
-    public string Phone {  get; private set; }
+    public string Phone { get; private set; }
     public string Address_line1 { get; private set; }
     public string Address_line2 { get; private set; }
     public string PostalCode { get; private set; }
@@ -54,5 +54,17 @@ namespace dotnet_qrshop.Domains
         request.Country,
         request.IsFavourite
       );
+
+    public void UpdateAddress(AddressRequest request)
+    {
+      FullName = request.FullName;
+      Phone = request.PhoneNumber;
+      Address_line1 = request.AddressLine1;
+      Address_line2 = request.AddressLine2;
+      PostalCode = request.PostalCode;
+      City = request.City;
+      State_or_Province = request.State;
+      Country = request.Country;
+    }
   }
 }

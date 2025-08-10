@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using dotnet_qrshop.Features.Addresses.Commands;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text.Json.Serialization;
 
@@ -22,4 +23,5 @@ public class ApplicationUser : IdentityUser<Guid>
   }
 
   public void RemoveAddress(Address address) => _addresses.Remove(address);
+  public void UpdateAddress(int addressId, AddressRequest address) => _addresses.FirstOrDefault(a => a.Id == addressId)?.UpdateAddress(address);
 }

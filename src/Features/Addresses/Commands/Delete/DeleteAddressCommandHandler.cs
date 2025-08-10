@@ -17,10 +17,10 @@ public class DeleteAddressCommandHandler(
       .Include(u => u.Addresses)
       .FirstOrDefaultAsync(u => u.Id == _userContext.UserId, cancellationToken);
 
-    if (user is null)
+    if (user is null || user.Addresses.FirstOrDefault(a => a.Id == command.Id) is null)
     {
       // TODO DYLAN: Log here
-      return Result.Failure(Error.NotFound("User not found", "Error removing address, please try again or contact the support"));
+      return Result.Failure(Error.Failure("User is null", "Error removing address, please try again or contact the support"));
     }
 
     var address = user.Addresses.FirstOrDefault(a => a.Id == command.Id);
