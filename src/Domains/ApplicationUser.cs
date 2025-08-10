@@ -24,4 +24,15 @@ public class ApplicationUser : IdentityUser<Guid>
 
   public void RemoveAddress(Address address) => _addresses.Remove(address);
   public void UpdateAddress(int addressId, AddressRequest address) => _addresses.FirstOrDefault(a => a.Id == addressId)?.UpdateAddress(address);
+  public void SetFavouriteAddress(int addressId)
+  {
+    if (_addresses.FirstOrDefault(a => a.Id == addressId)?.IsFavourite ?? false)
+    {
+      return;
+    }
+
+    _addresses.ForEach(a => a.SetFavourite(false));
+    _addresses.FirstOrDefault(a => a.Id == addressId)?
+      .SetFavourite(true);
+  }
 }

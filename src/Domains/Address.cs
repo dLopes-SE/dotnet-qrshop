@@ -66,5 +66,7 @@ namespace dotnet_qrshop.Domains
       State_or_Province = request.State;
       Country = request.Country;
     }
+
+    public void SetFavourite(bool isFavourite) => IsFavourite = isFavourite;
   }
 }
