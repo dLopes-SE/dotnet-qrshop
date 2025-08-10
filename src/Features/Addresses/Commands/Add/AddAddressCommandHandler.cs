@@ -22,7 +22,7 @@ public class AddAddressCommandHandler(
     if (user is null)
     {
       // TODO DYLAN: Log here
-      return Result.Failure(Error.NotFound("User not found", "User not found"));
+      return Result.Failure(Error.NotFound("User not found", "Error adding address, please try again or contact the support"));
     }
 
     if (user.Addresses.Count() >= MAX_ADDRESSES_PER_USER)

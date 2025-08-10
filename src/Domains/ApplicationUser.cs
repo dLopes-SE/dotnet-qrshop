@@ -20,4 +20,6 @@ public class ApplicationUser : IdentityUser<Guid>
 
     _addresses.Add(address);
   }
+
+  public void RemoveAddress(Address address) => _addresses.Remove(address);
 }
