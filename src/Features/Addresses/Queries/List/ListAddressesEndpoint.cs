@@ -17,7 +17,7 @@ public class ListAddressesEndpoint : ICarterModule
       var result = await handler.Handle(new ListAddressesQuery(), cancellationToken);
 
       return result.Match(
-        value => value.Any() ? Results.Ok() : Results.NoContent(),
+        value => value.Any() ? Results.Ok(value) : Results.NoContent(),
         CustomResults.Problem);
     })
       .WithName("ListAddresses")

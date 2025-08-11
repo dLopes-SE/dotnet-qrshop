@@ -16,6 +16,7 @@ public class ListAddressesQueryHandler(
     var addresses = await _dbContext.Addresses
       .AsNoTracking()
       .Where(a => a.UserId == _userContext.UserId)
+      .OrderByDescending(a => a.IsFavourite)
       .Select(a => (AddressDto)a)
       .ToListAsync(cancellationToken);
 
