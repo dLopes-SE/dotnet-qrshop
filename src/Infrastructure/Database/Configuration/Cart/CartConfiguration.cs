@@ -1,12 +1,11 @@
-﻿using dotnet_qrshop.Domains;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace dotnet_qrshop.Infrastructure.Database.Configuration.Shop;
+namespace dotnet_qrshop.Infrastructure.Database.Configuration.Cart;
 
-public class CartConfiguration : IEntityTypeConfiguration<Cart>
+public class CartConfiguration : IEntityTypeConfiguration<Domains.Cart>
 {
-  public void Configure(EntityTypeBuilder<Cart> builder)
+  public void Configure(EntityTypeBuilder<Domains.Cart> builder)
   {
     builder.HasKey(c => c.Id);
 
@@ -20,7 +19,7 @@ public class CartConfiguration : IEntityTypeConfiguration<Cart>
 
     builder.HasOne(c => c.User)
       .WithOne()
-      .HasForeignKey<Cart>(c => c.UserId);
+      .HasForeignKey<Domains.Cart>(c => c.UserId);
 
     builder.HasMany(c => c.Items)
       .WithOne(ci => ci.Cart)
@@ -28,7 +27,7 @@ public class CartConfiguration : IEntityTypeConfiguration<Cart>
       .OnDelete(DeleteBehavior.Cascade);
 
     builder.HasData(
-      new Cart
+      new Domains.Cart
       {
         Id = 1,
         UserId = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
@@ -36,7 +35,7 @@ public class CartConfiguration : IEntityTypeConfiguration<Cart>
         CreatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc),
         UpdatedAt = new DateTime(2025, 06, 26, 13, 03, 14, DateTimeKind.Utc)
       },
-      new Cart
+      new Domains.Cart
       {
         Id = 2,
         UserId = new Guid("9e224968-33e4-4652-b7b7-8574d048cdb9"),

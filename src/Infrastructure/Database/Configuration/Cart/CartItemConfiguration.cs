@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace dotnet_qrshop.Infrastructure.Database.Configuration.Shop;
+namespace dotnet_qrshop.Infrastructure.Database.Configuration.Cart;
 
 public class CartItemConfiguration : IEntityTypeConfiguration<CartItem>
 {
