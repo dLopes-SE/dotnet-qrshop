@@ -17,6 +17,9 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domains.Order>
     builder.Property(o => o.VersionHash)
       .HasMaxLength(128);
 
+    builder.Property(o => o.Status)
+      .HasConversion<string>();
+
     builder.HasOne(o => o.User)
       .WithOne()
       .HasForeignKey<Domains.Order>(o => o.UserId);
