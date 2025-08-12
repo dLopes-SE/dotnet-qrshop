@@ -22,4 +22,32 @@ public class Order : BaseEntity
   public string City { get; set; }
   public string State_or_Province { get; set; }
   public string Country { get; set; }
+
+  public Order() { }
+
+  public static Order Create(Cart cart, Address address) 
+  {
+    var order = new Order()
+    {
+      UserId = cart.UserId,
+      Status = OrderStatusEnum.Pending,
+
+      FullName = address.FullName,
+      Phone = address.Phone,
+      Address_line1 = address.Address_line1,
+      Address_line2 = address.Address_line2,
+      PostalCode = address.PostalCode,
+      City = address.City,
+      State_or_Province = address.State_or_Province,
+      Country = address.Country,
+
+      VersionHash = cart.VersionHash,
+    };
+
+    order._items.AddRange(cart.Items.Select(i => (OrderItem)i));
+
+    return order;
+  }
+
+  public void AddItem(CartItem item) => _items.Add((OrderItem)item);
 }

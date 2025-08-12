@@ -20,7 +20,7 @@ public class DeleteItemCommandHandler(
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)
     {
-      return Result.Failure(Error.Problem("Error deleting item", "Error deleting item, please try again or contact the support"));
+      return Result.Failure(Error.Failure("Error deleting item", "Error deleting item, please try again or contact the support"));
     }
 
     return Result.Success();

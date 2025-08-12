@@ -35,7 +35,7 @@ public class SetFavouriteAddressCommandHandler(
     if (result <= 0)
     {
       // TODO DYLAN: Log here
-      return Result.Failure(Error.Problem("Error setting favourite address", "Error setting favourite address, please try again or contact the support"));
+      return Result.Failure(Error.Failure("Error setting favourite address", "Error setting favourite address, please try again or contact the support"));
     }
 
     return Result.Success();

@@ -12,6 +12,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
   public DbSet<Cart> Cart {  get; set; }
   public DbSet<CartItem> CartItems { get; set; }
   public DbSet<Address> Addresses { get; set; }
+  public DbSet<Order> Orders { get; set; }
+  public DbSet<OrderItem> OrderItems { get; set; }
+
   protected override void OnModelCreating(ModelBuilder builder)
   {
     builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

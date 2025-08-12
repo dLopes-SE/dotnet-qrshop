@@ -17,7 +17,7 @@ public class AddItemCommandHandler(
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)
     {
-      return Result.Failure<ItemDto>(Error.Problem("Error creating item", "Error adding item, please try again or contact the support"));
+      return Result.Failure<ItemDto>(Error.Failure("Error creating item", "Error adding item, please try again or contact the support"));
     }
 
     return Result.Success((ItemDto)item);

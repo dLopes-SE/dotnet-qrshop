@@ -13,6 +13,8 @@ public class ApplicationUser : IdentityUser<Guid>
   public IReadOnlyList<Address> Addresses => _addresses.AsReadOnly();
   private readonly List<Address> _addresses = [];
 
+  public Cart Cart { get; set; }
+
   public void AddAddress(Address address) {
     if (_addresses.Count == 0 && !address.IsFavourite)
     {

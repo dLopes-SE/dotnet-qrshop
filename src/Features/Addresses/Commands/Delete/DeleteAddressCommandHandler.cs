@@ -17,14 +17,13 @@ public class DeleteAddressCommandHandler(
       .Include(u => u.Addresses)
       .FirstOrDefaultAsync(u => u.Id == _userContext.UserId, cancellationToken);
 
-    if (user is null || user.Addresses.FirstOrDefault(a => a.Id == command.Id) is null)
+    if (user is null)
     {
       // TODO DYLAN: Log here
       return Result.Failure(Error.Failure("User is null", "Error removing address, please try again or contact the support"));
     }
 
     var address = user.Addresses.FirstOrDefault(a => a.Id == command.Id);
-
     if (address is null)
     {
       // TODO DYLAN: Log here
@@ -36,7 +35,7 @@ public class DeleteAddressCommandHandler(
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)
     {
-      return Result.Failure(Error.Problem("Error removing address", "Error removing address, please try again or contact the support"));
+      return Result.Failure(Error.Failure("Error removing address", "Error removing address, please try again or contact the support"));
     }
 
     return Result.Success();
