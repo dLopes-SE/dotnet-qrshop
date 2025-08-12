@@ -20,6 +20,34 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domains.Order>
     builder.Property(o => o.Status)
       .HasConversion<string>();
 
+    builder.Property(o => o.FullName)
+      .IsRequired();
+
+    builder.Property(o => o.Phone)
+      .IsRequired()
+      .HasMaxLength(20);
+
+    builder.Property(o => o.Address_line1)
+      .IsRequired()
+      .HasMaxLength(200);
+
+    builder.Property(o => o.Address_line2)
+      .HasMaxLength(200);
+
+    builder.Property(o => o.PostalCode)
+      .IsRequired()
+      .HasMaxLength(25);
+
+    builder.Property(o => o.City)
+      .IsRequired()
+      .HasMaxLength(255);
+
+    builder.Property(o => o.State_or_Province)
+        .HasMaxLength(100);
+
+    builder.Property(o => o.Country)
+        .HasMaxLength(2);
+
     builder.HasOne(o => o.User)
       .WithOne()
       .HasForeignKey<Domains.Order>(o => o.UserId);

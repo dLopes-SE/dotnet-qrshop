@@ -13,4 +13,13 @@ public class Order : BaseEntity
 
   public OrderStatusEnum Status { get; set; }
   public string VersionHash {  get; set; } = string.Empty;
+
+  public string FullName { get; set; }
+  public string Phone { get; set; }
+  public string Address_line1 { get; set; }
+  public string? Address_line2 { get; set; }
+  public string PostalCode { get; set; }
+  public string City { get; set; }
+  public string State_or_Province { get; set; }
+  public string Country { get; set; }
 }
