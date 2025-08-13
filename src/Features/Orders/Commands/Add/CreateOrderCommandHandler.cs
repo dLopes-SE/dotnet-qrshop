@@ -1,4 +1,5 @@
-﻿using dotnet_qrshop.Abstractions.Authentication;
+﻿using dotnet_qrshop.Abstractions;
+using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Domains;
@@ -10,7 +11,8 @@ namespace dotnet_qrshop.Features.Orders.Commands.Add;
 
 public class CreateOrderCommandHandler(
   ApplicationDbContext _dbContext,
-  IUserContext _userContext) : ICommandHandler<CreateOrderCommand>
+  IUserContext _userContext,
+  IOrderService _orderService) : ICommandHandler<CreateOrderCommand>
 {
   public async Task<Result> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
   {
@@ -19,12 +21,16 @@ public class CreateOrderCommandHandler(
       return Result.Failure(Error.Problem("Only one of the two properties must be present: addressId; addressRequest", "Error creating order, please try again or contact the support"));
     }
 
+    if (await _orderService.HasPendingCheckout(cancellationToken))
+    {
+      return Result.Failure(Error.Problem("There's a pending checkout", "Error creating order, please try again or contact the support"));
+    }
+
     var user = await _dbContext.Users
       .Include(u => u.Cart)
         .ThenInclude(c => c.Items)
       .IncludeIf(command.Request.AddressId > 0, u => u.Addresses)
       .FirstOrDefaultAsync(u => u.Id == _userContext.UserId, cancellationToken: cancellationToken);
-    
 
     if (user is null)
     {
@@ -48,7 +54,7 @@ public class CreateOrderCommandHandler(
       return Result.Failure(Error.Problem("Address not provided", "Error creating order, please try again or contact the support"));
     }
 
-    throw new NotImplementedException();
+    return Result.Success();
   }
 
   private async Task<Result> AddOrder(Cart cart, Address address, CancellationToken cancellationToken)

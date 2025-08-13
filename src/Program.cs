@@ -1,4 +1,5 @@
 ﻿using Carter;
+using dotnet_qrshop.Abstractions;
 using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Behaviours;
@@ -80,6 +81,7 @@ builder.Services.AddScoped<IUserContext, UserContext>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddCors(options =>
 {
