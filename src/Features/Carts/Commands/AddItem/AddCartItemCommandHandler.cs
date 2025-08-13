@@ -1,4 +1,5 @@
-﻿using dotnet_qrshop.Abstractions.Authentication;
+﻿using dotnet_qrshop.Abstractions;
+using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Domains;
@@ -9,7 +10,8 @@ namespace dotnet_qrshop.Features.Carts.Commands.AddItem;
 
 public class AddCartItemCommandHandler(
   ApplicationDbContext _dbContext,
-  IUserContext _userContext) : ICommandHandler<AddCartItemCommand, int>
+  IUserContext _userContext,
+  IOrderService _orderService) : ICommandHandler<AddCartItemCommand, int>
 {
   public async Task<Result<int>> Handle(AddCartItemCommand command, CancellationToken cancellationToken)
   {
@@ -18,6 +20,11 @@ public class AddCartItemCommandHandler(
     {
       // TODO DYLAN: Log error here
       return Result.Failure<int>(Error.Failure("Cart is null", "Error adding item to cart, please try again or contact the support"));
+    }
+
+    if (!await _orderService.IsCartChangeAllowedAsync(cancellationToken))
+    {
+      return Result.Failure<int>(Error.Problem("There's a pending checkout", "Error adding item to cart, please try again or contact the support"));
     }
 
     using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);

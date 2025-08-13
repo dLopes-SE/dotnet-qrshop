@@ -4,6 +4,6 @@ namespace dotnet_qrshop.Abstractions;
 
 public interface IOrderService
 {
-  Result<Task<bool>> IsCartChangeAllowed();
+  Task<bool> IsCartChangeAllowedAsync(CancellationToken cancellationToken);
   Task<bool> HasPendingCheckout(CancellationToken cancellationToken);
 }
