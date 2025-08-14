@@ -1,10 +1,8 @@
 ﻿using dotnet_qrshop.Abstractions;
 using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Common.Enums;
-using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace dotnet_qrshop.Services
 {
@@ -16,7 +14,7 @@ namespace dotnet_qrshop.Services
     {
       var pendingOrder = await _dbContext.Orders
         .AsNoTracking()
-        .FirstOrDefaultAsync(
+        .AnyAsync(
           o => o.UserId == _userContext.UserId &&
             (
               o.Status == OrderStatusEnum.Pending
@@ -26,14 +24,14 @@ namespace dotnet_qrshop.Services
           cancellationToken
         );
 
-      return pendingOrder is not null;
+      return !pendingOrder;
     }
 
     public async Task<bool> IsCartChangeAllowedAsync(CancellationToken cancellationToken)
     {
-      var order = await _dbContext.Orders
+      var hasBlockingOrder = await _dbContext.Orders
         .AsNoTracking()
-        .FirstOrDefaultAsync(
+        .AnyAsync(
           o => o.UserId == _userContext.UserId &&
             (o.Status == OrderStatusEnum.Paying
               || o.Status == OrderStatusEnum.PaymentFailed
@@ -41,7 +39,7 @@ namespace dotnet_qrshop.Services
           cancellationToken
         );
 
-      return order is not null;
+      return !hasBlockingOrder;
     }
   }
 }

@@ -1,4 +1,4 @@
-﻿using dotnet_qrshop.Features.Orders.Commands.UpdateAddress;
+﻿using dotnet_qrshop.Features.Addresses.Commands.Update;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json.Serialization;
 
