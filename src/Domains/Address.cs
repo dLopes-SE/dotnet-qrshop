@@ -1,4 +1,7 @@
 ﻿using dotnet_qrshop.Features.Addresses.Commands;
+using dotnet_qrshop.Features.Addresses.Commands.Update;
+using dotnet_qrshop.Features.Common;
+using dotnet_qrshop.Features.Orders.Commands.UpdateAddress;
 
 namespace dotnet_qrshop.Domains
 {
@@ -41,7 +44,7 @@ namespace dotnet_qrshop.Domains
       IsFavourite = isFavourite;
     }
 
-    public static explicit operator Address(AddressRequest request) =>
+    public static Address Parse(BaseAddressRequest request, bool isFavourite) =>
       new
       (
         request.FullName,
@@ -52,19 +55,19 @@ namespace dotnet_qrshop.Domains
         request.City,
         request.State,
         request.Country,
-        request.IsFavourite
+        isFavourite
       );
 
-    public void UpdateAddress(AddressRequest request)
+    public void UpdateAddress(UpdateAddressRequest request)
     {
-      FullName = request.FullName;
-      Phone = request.PhoneNumber;
-      Address_line1 = request.AddressLine1;
-      Address_line2 = request.AddressLine2;
-      PostalCode = request.PostalCode;
-      City = request.City;
-      State_or_Province = request.State;
-      Country = request.Country;
+      FullName = request.Address.FullName;
+      Phone = request.Address.PhoneNumber;
+      Address_line1 = request.Address.AddressLine1;
+      Address_line2 = request.Address.AddressLine2;
+      PostalCode = request.Address.PostalCode;
+      City = request.Address.City;
+      State_or_Province = request.Address.State;
+      Country = request.Address.Country;
     }
 
     public void SetFavourite(bool isFavourite) => IsFavourite = isFavourite;

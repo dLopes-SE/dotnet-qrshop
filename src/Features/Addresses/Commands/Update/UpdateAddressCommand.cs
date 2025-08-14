@@ -1,10 +1,11 @@
 ﻿
 
 using dotnet_qrshop.Abstractions.Messaging;
+using dotnet_qrshop.Features.Orders.Commands.UpdateAddress;
 
 namespace dotnet_qrshop.Features.Addresses.Commands.Update;
 
-public record UpdateAddressCommand(int Id, AddressRequest request) : ICommand
+public record UpdateAddressCommand(int Id, UpdateAddressRequest Request) : ICommand
 {
-  public static UpdateAddressCommand Parse(int id, AddressRequest address) => new(id, address);
+  public static UpdateAddressCommand Parse(int id, UpdateAddressRequest address) => new(id, address);
 }

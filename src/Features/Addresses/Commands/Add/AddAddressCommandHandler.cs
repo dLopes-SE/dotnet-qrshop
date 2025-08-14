@@ -30,7 +30,7 @@ public class AddAddressCommandHandler(
       return Result.Failure(Error.Failure("Maximum addresses achived", "Users can only have up to 3 addresses"));
     }
 
-    user.AddAddress((Address)command.Request);
+    user.AddAddress(Address.Parse(command.Request.Address, command.Request.IsFavourite));
     
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)

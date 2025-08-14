@@ -1,4 +1,4 @@
-﻿namespace dotnet_qrshop.Common.Models
+﻿namespace dotnet_qrshop.Features.Common
 {
   public record BaseAddressRequest(
     string FullName,

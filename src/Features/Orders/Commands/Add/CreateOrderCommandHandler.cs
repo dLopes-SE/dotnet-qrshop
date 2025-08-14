@@ -4,7 +4,6 @@ using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Domains;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
-using dotnet_qrshop.Infrastructure.Database.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_qrshop.Features.Orders.Commands.Add;
@@ -26,27 +25,31 @@ public class CreateOrderCommandHandler(
       return Result.Failure(Error.Problem("There's a pending checkout", "Error creating order, please try again or contact the support"));
     }
 
-    var user = await _dbContext.Users
-      .Include(u => u.Cart)
-        .ThenInclude(c => c.Items)
-      .IncludeIf(command.Request.AddressId > 0, u => u.Addresses)
-      .FirstOrDefaultAsync(u => u.Id == _userContext.UserId, cancellationToken: cancellationToken);
+    var cartAddress = await _dbContext.Cart
+      .AsNoTracking()
+      .Where(c => c.UserId == _userContext.UserId)
+      .Include(c => c.Items)
+      .Select(c => new CartAddress
+      {
+        Cart = c,
+        Address = c.User.Addresses
+              .FirstOrDefault(a => a.Id == command.Request.AddressId)
+      })
+      .FirstOrDefaultAsync(cancellationToken);
 
-    if (user is null)
+    if (cartAddress is null)
     {
-      return Result.Failure(Error.NotFound("User not found", "Error creating order, please try again or contact the support"));
+      return Result.Failure(Error.NotFound("Cart not found", "Error creating order, please try again or contact the support"));
     }
 
-    Address? address;
     if (command.Request.AddressId > 0)
     {
-      address = user.Addresses.FirstOrDefault(a => a.Id == command.Request.AddressId);
-      if (address is null)
+      if (cartAddress.Address is null)
       {
         return Result.Failure(Error.NotFound("Address not found", "Error creating order, please try again or contact the support"));
       }
 
-      return await AddOrder(user.Cart, address, cancellationToken);
+      return await AddOrder(cartAddress.Cart, cartAddress.Address, cancellationToken);
     }
 
     if (command.Request.AddressRequest is null)
@@ -69,5 +72,11 @@ public class CreateOrderCommandHandler(
     }
 
     return Result.Success();
+  }
+
+  private record CartAddress
+  {
+    public Cart? Cart { get; init; }
+    public Address? Address { get; init; }
   }
 }

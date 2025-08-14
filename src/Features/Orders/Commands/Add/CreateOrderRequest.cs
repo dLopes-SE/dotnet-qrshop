@@ -1,4 +1,4 @@
-﻿using dotnet_qrshop.Common.Models;
+﻿using dotnet_qrshop.Features.Common;
 
 namespace dotnet_qrshop.Features.Orders.Commands.Add;
 

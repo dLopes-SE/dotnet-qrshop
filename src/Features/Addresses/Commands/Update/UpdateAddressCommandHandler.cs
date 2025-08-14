@@ -28,7 +28,7 @@ public class UpdateAddressCommandHandler(
       return Result.Failure(Error.NotFound("Address not found", "Error updating address, please try again or contact the support"));
     }
 
-    user.UpdateAddress(command.Id, command.request);
+    user.UpdateAddress(command.Id, command.Request);
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <=  0)
     {

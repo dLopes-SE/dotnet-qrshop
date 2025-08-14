@@ -1,37 +1,14 @@
-﻿using FluentValidation;
+﻿using dotnet_qrshop.Features.Common;
+using FluentValidation;
 
 namespace dotnet_qrshop.Features.Addresses.Commands;
 
-public sealed class AddressValidator : AbstractValidator<AddressRequest>
+public sealed class AddressValidator : AbstractValidator<AddAddressRequest>
 {
   public AddressValidator()
   {
-    RuleFor(a => a.FullName)
-      .NotEmpty()
-      .MaximumLength(200);
-
-    RuleFor(a => a.PhoneNumber)
-      .NotEmpty()
-      .MaximumLength(20);
-
-    RuleFor(a => a.AddressLine1)
-      .NotEmpty()
-      .MaximumLength(200);
-
-    RuleFor(a => a.AddressLine2)
-      .MaximumLength(200);
-
-    RuleFor(a => a.PostalCode)
-      .NotEmpty()
-      .MaximumLength(25);
-
-    RuleFor(a => a.City)
-      .NotEmpty()
-      .MaximumLength(255);
-
-    RuleFor(a => a.Country)
-      .NotEmpty()
-      .Length(2)
-      .Matches("^[A-Z]{2}$"); // only uppercase A-Z letters
+    RuleFor(a => a.Address)
+      .SetValidator(new BaseAddressValidator());
   }
+  
 }

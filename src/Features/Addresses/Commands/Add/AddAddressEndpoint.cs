@@ -11,7 +11,7 @@ public class AddAddressEndpoint : ICarterModule
   public void AddRoutes(IEndpointRouteBuilder app)
   {
     app.MapPost("user/address", async (
-      [FromBody] AddressRequest request,
+      [FromBody] AddAddressRequest request,
       ICommandHandler<AddAddressCommand> handler,
       CancellationToken cancellationToken) =>
     {

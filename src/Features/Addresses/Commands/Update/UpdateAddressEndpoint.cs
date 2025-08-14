@@ -2,6 +2,7 @@
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Results;
+using dotnet_qrshop.Features.Orders.Commands.UpdateAddress;
 using Microsoft.AspNetCore.Mvc;
 
 namespace dotnet_qrshop.Features.Addresses.Commands.Update;
@@ -12,7 +13,7 @@ public class UpdateAddressEndpoint : ICarterModule
   {
     app.MapPatch("user/address/{id}", async (
       int id,
-      [FromBody] AddressRequest request,
+      [FromBody] UpdateAddressRequest request,
       ICommandHandler<UpdateAddressCommand> handler,
       CancellationToken cancellationToken) =>
     {
