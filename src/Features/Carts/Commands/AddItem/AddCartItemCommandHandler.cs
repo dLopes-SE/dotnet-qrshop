@@ -27,8 +27,12 @@ public class AddCartItemCommandHandler(
       return Result.Failure<int>(Error.Problem("There's a pending checkout", "Error adding item to cart, please try again or contact the support"));
     }
 
+    // Add to cart
     var cartItem = (CartItem)command.request;
     cart.AddItem(cartItem);
+
+    // Add to order (if exists)
+    (await _orderService.GetPendingOrder(cancellationToken))?.AddItem(cartItem);
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)

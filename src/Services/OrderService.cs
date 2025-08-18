@@ -1,6 +1,7 @@
 ﻿using dotnet_qrshop.Abstractions;
 using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Common.Enums;
+using dotnet_qrshop.Domains;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,7 @@ namespace dotnet_qrshop.Services
     ApplicationDbContext _dbContext,
     IUserContext _userContext) : IOrderService
   {
-    public async Task<bool> HasOnGoingCheckout(CancellationToken cancellationToken)
+    public async Task<bool> HasPendingCheckout(CancellationToken cancellationToken)
     {
       var order = await _dbContext.Orders
         .AsNoTracking()
@@ -42,13 +43,11 @@ namespace dotnet_qrshop.Services
       return !hasBlockingOrder;
     }
 
-    public async Task<bool> HasPendingCheckout(CancellationToken cancellationToken)
+    public async Task<Order> GetPendingOrder(CancellationToken cancellationToken)
     {
-      var pendingOrder = await _dbContext.Orders
+      return await _dbContext.Orders
         .AsNoTracking()
-        .AnyAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
-
-      return !pendingOrder;
+        .FirstOrDefaultAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
     }
   }
 }

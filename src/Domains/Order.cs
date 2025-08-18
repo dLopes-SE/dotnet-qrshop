@@ -46,4 +46,6 @@ public class Order : BaseEntity
   }
 
   public void AddItem(CartItem item) => _items.Add((OrderItem)item);
+  public void UpdateItem(int itemId, int quantity) => _items.FirstOrDefault(oi => oi.ItemId == itemId)?.UpdateQuantity(quantity);
+  public void RemoveItem(int itemId) => _items.RemoveAll(oi => oi.ItemId == itemId);
 }

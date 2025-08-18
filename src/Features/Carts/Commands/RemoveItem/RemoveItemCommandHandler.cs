@@ -35,7 +35,11 @@ public class RemoveItemCommandHandler(
       return Result.Failure(Error.NotFound("CartItem not found", "Error removing item, please try again or contact the support"));
     }
 
+    // Remove from cart
     cart.RemoveItem(cart.Items.FirstOrDefault(i =>  i.Id == command.CartItemId));
+
+    // Remove from order (if exists)
+    (await _orderService.GetPendingOrder(cancellationToken))?.RemoveItem(command.CartItemId);
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)

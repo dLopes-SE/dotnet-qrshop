@@ -16,4 +16,6 @@ public class OrderItem : BaseEntity
   }
 
   public static explicit operator OrderItem(CartItem cartItem) => new(cartItem.ItemId, cartItem.Quantity);
+
+  public void UpdateQuantity(int quantity) => Quantity = quantity;
 }

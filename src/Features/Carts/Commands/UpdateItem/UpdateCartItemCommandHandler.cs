@@ -35,7 +35,12 @@ public class UpdateCartItemCommandHandler(
       return Result.Failure(Error.NotFound("CartItem not found", "Error updating cart item, please try again or contact the support"));
     }
 
+    // Update cart item
     cart.UpdateItem(command.CartItem.Id ?? 0, command.CartItem.Quantity);
+
+    // Update order (if exists)
+    (await _orderService.GetPendingOrder(cancellationToken))?
+      .UpdateItem(cart.Items.FirstOrDefault(i => i.Id == command.CartItem.Id)?.ItemId ?? 0, command.CartItem.Quantity);
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)
