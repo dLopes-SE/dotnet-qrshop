@@ -27,44 +27,15 @@ public class AddCartItemCommandHandler(
       return Result.Failure<int>(Error.Problem("There's a pending checkout", "Error adding item to cart, please try again or contact the support"));
     }
 
-    using var transaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+    var cartItem = (CartItem)command.request;
+    cart.AddItem(cartItem);
 
-    try
+    var result = await _dbContext.SaveChangesAsync(cancellationToken);
+    if (result <= 0)
     {
-      // Add item
-      var cartItem = (CartItem)command.request;
-      cart.AddItem(cartItem);
-
-      var result = await _dbContext.SaveChangesAsync(cancellationToken);
-      if (result <= 0)
-      {
-        return Result.Failure<int>(Error.Failure("Error inserting item", "Error adding item to cart, please try again or contact the support"));
-      }
-
-      // Load the item after insert
-      await _dbContext.Entry(cartItem)
-        .Reference(ci => ci.Item)
-        .LoadAsync(cancellationToken);
-
-      // Update cart version hash
-      cart.UpdateHashVersion();
-
-      result = await _dbContext.SaveChangesAsync(cancellationToken);
-      if (result <= 0)
-      {
-        await transaction.RollbackAsync(cancellationToken);
-        return Result.Failure<int>(Error.Failure("Error updating version", "Error adding item to cart, please try again or contact the support"));
-      }
-
-      await transaction.CommitAsync(cancellationToken);
-
-      return Result.Success(cartItem.Id);
+      return Result.Failure<int>(Error.Failure("Error inserting item", "Error adding item to cart, please try again or contact the support"));
     }
-    catch (Exception ex)
-    {
-      await transaction.RollbackAsync(cancellationToken);
-      // Log error
-      return Result.Failure<int>(Error.Failure("Unexpected error occurred", "Error adding item to cart, please try again or contact the support"));
-    }
+
+    return Result.Success(cartItem.Id);
   }
 }

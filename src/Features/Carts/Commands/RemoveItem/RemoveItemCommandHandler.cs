@@ -36,7 +36,6 @@ public class RemoveItemCommandHandler(
     }
 
     cart.RemoveItem(cart.Items.FirstOrDefault(i =>  i.Id == command.CartItemId));
-    cart.UpdateHashVersion();
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)

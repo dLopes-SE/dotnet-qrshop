@@ -36,7 +36,6 @@ public class UpdateCartItemCommandHandler(
     }
 
     cart.UpdateItem(command.CartItem.Id ?? 0, command.CartItem.Quantity);
-    cart.UpdateHashVersion();
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)

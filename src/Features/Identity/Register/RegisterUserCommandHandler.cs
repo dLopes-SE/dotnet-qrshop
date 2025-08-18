@@ -33,15 +33,10 @@ public class RegisterUserCommandHandler(
   {
     var cart = new Cart
     {
-      UserId = userId,
-      VersionHash = string.Empty
+      UserId = userId
     };
 
     await _dbContext.Cart.AddAsync(cart, cancellationToken);
-    await _dbContext.SaveChangesAsync(cancellationToken);
-
-    // Now we got the cardId
-    cart.UpdateHashVersion();
     await _dbContext.SaveChangesAsync(cancellationToken);
   }
 }

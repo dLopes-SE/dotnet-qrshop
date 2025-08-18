@@ -14,9 +14,6 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domains.Order>
 
     builder.HasIndex(o => o.Id);
 
-    builder.Property(o => o.VersionHash)
-      .HasMaxLength(128);
-
     builder.Property(o => o.Status)
       .HasConversion<string>();
 

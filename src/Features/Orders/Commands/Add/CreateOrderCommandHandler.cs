@@ -20,7 +20,7 @@ public class CreateOrderCommandHandler(
       return Result.Failure(Error.Problem("Only one of the two properties must be present: addressId; addressRequest", "Error creating order, please try again or contact the support"));
     }
 
-    if (await _orderService.HasPendingCheckout(cancellationToken))
+    if (await _orderService.HasOnGoingCheckout(cancellationToken))
     {
       return Result.Failure(Error.Problem("There's a pending checkout", "Error creating order, please try again or contact the support"));
     }

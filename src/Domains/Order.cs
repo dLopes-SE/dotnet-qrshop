@@ -12,8 +12,6 @@ public class Order : BaseEntity
   private readonly List<OrderItem> _items = [];
 
   public OrderStatusEnum Status { get; set; }
-  public string VersionHash {  get; set; } = string.Empty;
-
   public string FullName { get; set; }
   public string Phone { get; set; }
   public string Address_line1 { get; set; }
@@ -40,8 +38,6 @@ public class Order : BaseEntity
       City = address.City,
       State_or_Province = address.State_or_Province,
       Country = address.Country,
-
-      VersionHash = cart.VersionHash,
     };
 
     order._items.AddRange(cart.Items.Select(i => (OrderItem)i));

@@ -10,9 +10,9 @@ namespace dotnet_qrshop.Services
     ApplicationDbContext _dbContext,
     IUserContext _userContext) : IOrderService
   {
-    public async Task<bool> HasPendingCheckout(CancellationToken cancellationToken)
+    public async Task<bool> HasOnGoingCheckout(CancellationToken cancellationToken)
     {
-      var pendingOrder = await _dbContext.Orders
+      var order = await _dbContext.Orders
         .AsNoTracking()
         .AnyAsync(
           o => o.UserId == _userContext.UserId &&
@@ -20,11 +20,11 @@ namespace dotnet_qrshop.Services
               o.Status == OrderStatusEnum.Pending
               || o.Status == OrderStatusEnum.Paying
               || o.Status == OrderStatusEnum.PaymentFailed
-            ), 
+            ),
           cancellationToken
         );
 
-      return !pendingOrder;
+      return !order;
     }
 
     public async Task<bool> IsCartChangeAllowedAsync(CancellationToken cancellationToken)
@@ -40,6 +40,15 @@ namespace dotnet_qrshop.Services
         );
 
       return !hasBlockingOrder;
+    }
+
+    public async Task<bool> HasPendingCheckout(CancellationToken cancellationToken)
+    {
+      var pendingOrder = await _dbContext.Orders
+        .AsNoTracking()
+        .AnyAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
+
+      return !pendingOrder;
     }
   }
 }
