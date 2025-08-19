@@ -16,8 +16,7 @@ public class GetCartQueryHandler(
   private const int CART_PREVIEW_ITEMS_NO = 3;
   public async Task<Result<CartDto>> Handle(GetCartQuery query, CancellationToken cancellationToken)
   {
-    var isCartChangeAllowedTask = _orderService.IsCartChangeAllowedAsync(cancellationToken);
-    var cartTask = _dbContext.Cart
+    var cart = await _dbContext.Cart
       .AsNoTracking()
       .Where(c => c.UserId == _userContext.UserId)
       .Include(c => c.Items)
@@ -35,19 +34,19 @@ public class GetCartQueryHandler(
       })
       .FirstOrDefaultAsync(cancellationToken);
 
-    await Task.WhenAll(isCartChangeAllowedTask, cartTask);
-
-    if (cartTask.Result is null)
+    if (cart is null)
     {
       // TODO DYLAN: Log error here
       return Result.Failure<CartDto>(Error.Failure("Internal error", "Error getting cart, please try again or contact the support"));
     }
 
+    var isCartChangeAllowed = await _orderService.IsCartChangeAllowedAsync(cancellationToken);
+
     return new CartDto(
-      cartTask.Result.TotalQuantity,
-      cartTask.Result.TotalPrice,
-      isCartChangeAllowedTask.Result,
-      cartTask.Result.Items
+      cart.TotalQuantity,
+      cart.TotalPrice,
+      isCartChangeAllowed,
+      cart.Items
     );
   }
 }
