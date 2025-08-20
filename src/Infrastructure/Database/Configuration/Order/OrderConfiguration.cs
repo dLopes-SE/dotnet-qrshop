@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using dotnet_qrshop.Domains;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace dotnet_qrshop.Infrastructure.Database.Configuration.Order;
@@ -16,6 +17,10 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domains.Order>
 
     builder.Property(o => o.Status)
       .HasConversion<string>();
+
+    builder.HasOne<Address>()
+      .WithMany()
+      .HasForeignKey(o => o.AddressId);
 
     builder.Property(o => o.FullName)
       .IsRequired();

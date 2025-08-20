@@ -13,6 +13,7 @@ public class Order : BaseEntity
   private readonly List<OrderItem> _items = [];
 
   public OrderStatusEnum Status { get; set; }
+  public int? AddressId { get; set; }
   public string FullName { get; set; }
   public string Phone { get; set; }
   public string Address_line1 { get; set; }

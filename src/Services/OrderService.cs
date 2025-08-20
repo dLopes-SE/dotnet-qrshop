@@ -45,6 +45,19 @@ namespace dotnet_qrshop.Services
         .FirstOrDefaultAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
     }
 
+    public async Task<Order> GetPendingOrder(int addressId, CancellationToken cancellationToken)
+    {
+      return await _dbContext.Orders
+        .AsNoTracking()
+        .FirstOrDefaultAsync
+        (
+          o => o.UserId == _userContext.UserId
+          && o.AddressId == addressId
+          && o.Status == OrderStatusEnum.Pending, 
+          cancellationToken
+        );
+    }
+
     #region private methods
     private async Task<bool> HasBlockingOrder(CancellationToken cancellationToken)
     {

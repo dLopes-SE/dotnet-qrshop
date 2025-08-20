@@ -39,7 +39,7 @@ public class UpdateAddressCommandHandler(
     user.UpdateAddress(command.Id, command.Request);
 
     // Update order's address (if exists)
-    (await _orderService.GetPendingOrder(cancellationToken))?
+    (await _orderService.GetPendingOrder(command.Id ,cancellationToken))?
       .UpdateAddress(command.Request.Address);
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
