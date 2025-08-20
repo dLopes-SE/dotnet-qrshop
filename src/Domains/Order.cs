@@ -1,4 +1,5 @@
 ﻿using dotnet_qrshop.Common.Enums;
+using dotnet_qrshop.Features.Common;
 using System.Text.Json.Serialization;
 
 namespace dotnet_qrshop.Domains;
@@ -45,7 +46,23 @@ public class Order : BaseEntity
     return order;
   }
 
+  #region items
   public void AddItem(CartItem item) => _items.Add((OrderItem)item);
   public void UpdateItem(int itemId, int quantity) => _items.FirstOrDefault(oi => oi.ItemId == itemId)?.UpdateQuantity(quantity);
   public void RemoveItem(int itemId) => _items.RemoveAll(oi => oi.ItemId == itemId);
+  #endregion
+
+  #region address
+  public void UpdateAddress(BaseAddressRequest address)
+  {
+    FullName = address.FullName;
+    Phone = address.PhoneNumber;
+    Address_line1 = address.AddressLine1;
+    Address_line2 = address.AddressLine2;
+    PostalCode = address.PostalCode;
+    City = address.City;
+    State_or_Province = address.State;
+    Country = address.Country;
+  }
+  #endregion
 }

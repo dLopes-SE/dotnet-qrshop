@@ -11,6 +11,16 @@ namespace dotnet_qrshop.Services
     ApplicationDbContext _dbContext,
     IUserContext _userContext) : IOrderService
   {
+    public async Task<bool> IsCartChangeAllowedAsync(CancellationToken cancellationToken)
+    {
+      return await HasBlockingOrder(cancellationToken);
+    }
+
+    public async Task<bool> IsAddressChangeAllowedAsync(CancellationToken cancellationToken)
+    { 
+      return await HasBlockingOrder(cancellationToken);
+    }
+
     public async Task<bool> HasPendingCheckout(CancellationToken cancellationToken)
     {
       var order = await _dbContext.Orders
@@ -28,7 +38,15 @@ namespace dotnet_qrshop.Services
       return !order;
     }
 
-    public async Task<bool> IsCartChangeAllowedAsync(CancellationToken cancellationToken)
+    public async Task<Order> GetPendingOrder(CancellationToken cancellationToken)
+    {
+      return await _dbContext.Orders
+        .AsNoTracking()
+        .FirstOrDefaultAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
+    }
+
+    #region private methods
+    private async Task<bool> HasBlockingOrder(CancellationToken cancellationToken)
     {
       var hasBlockingOrder = await _dbContext.Orders
         .AsNoTracking()
@@ -42,12 +60,6 @@ namespace dotnet_qrshop.Services
 
       return !hasBlockingOrder;
     }
-
-    public async Task<Order> GetPendingOrder(CancellationToken cancellationToken)
-    {
-      return await _dbContext.Orders
-        .AsNoTracking()
-        .FirstOrDefaultAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
-    }
+    #endregion
   }
 }
