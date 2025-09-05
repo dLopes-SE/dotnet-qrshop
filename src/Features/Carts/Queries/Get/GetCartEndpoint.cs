@@ -20,12 +20,6 @@ public class GetCartEndpoint : ICarterModule
       var cartHash = _context.Request.Cookies["cart_hash"];
 
       var result = await handler.Handle(new GetCartQuery(isCartPreview), cancellationToken);
-
-      if (result.IsSuccess && result.Value.Quantity == 0)
-      {
-        return Results.NoContent();
-      }
-
       return result.Match(Results.Ok, CustomResults.Problem);
     })
       .WithName("GetCart")
