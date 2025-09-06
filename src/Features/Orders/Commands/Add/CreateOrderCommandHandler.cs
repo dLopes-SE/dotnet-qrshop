@@ -3,6 +3,7 @@ using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Domains;
+using dotnet_qrshop.Features.Common;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,21 @@ public class CreateOrderCommandHandler(
       return Result.Failure(Error.Problem("There's a pending checkout", "Error creating order, please try again or contact the support"));
     }
 
+    if (command.Request.AddressId is not null && command.Request.AddressId > 0)
+    {
+      return await AddUserAddressOrder((int)command.Request.AddressId, cancellationToken);
+    }
+
+    if (command.Request.AddressRequest is not null)
+    {
+      return await AddCustomAddressOrder(command.Request.AddressRequest, cancellationToken);
+    }
+
+    return Result.Failure(Error.Failure("CreateOrder validation failure", "Error creating order, please try again or contact the support"));
+  }
+
+  private async Task<Result> AddUserAddressOrder(int addressId, CancellationToken cancellationToken)
+  {
     var cartAddress = await _dbContext.Cart
       .AsNoTracking()
       .Where(c => c.UserId == _userContext.UserId)
@@ -33,31 +49,43 @@ public class CreateOrderCommandHandler(
       {
         Cart = c,
         Address = c.User.Addresses
-              .FirstOrDefault(a => a.Id == command.Request.AddressId)
+              .FirstOrDefault(a => a.Id == addressId)
       })
       .FirstOrDefaultAsync(cancellationToken);
 
-    if (cartAddress is null)
+    if (cartAddress?.Cart is null)
     {
-      return Result.Failure(Error.NotFound("Cart not found", "Error creating order, please try again or contact the support"));
+      return Result.Failure(Error.Failure("Cart not found", "Error creating order, please try again or contact the support"));
     }
 
-    if (command.Request.AddressId > 0)
+    if (cartAddress.Address is null)
     {
-      if (cartAddress.Address is null)
-      {
-        return Result.Failure(Error.NotFound("Address not found", "Error creating order, please try again or contact the support"));
-      }
-
-      return await AddOrder(cartAddress.Cart, cartAddress.Address, cancellationToken);
+      return Result.Failure(Error.NotFound("Address not found", "Error creating order, please try again or contact the support"));
     }
 
-    if (command.Request.AddressRequest is null)
+    return await AddOrder(cartAddress.Cart, cartAddress.Address, cancellationToken);
+  }
+
+  private async Task<Result> AddCustomAddressOrder(BaseAddressRequest addressRequest, CancellationToken cancellationToken)
+  {
+    if (addressRequest is null)
     {
       return Result.Failure(Error.Problem("Address not provided", "Error creating order, please try again or contact the support"));
     }
 
-    return Result.Success();
+    // isFavourite doesn't matter for the order's address
+    var address = Address.Parse(addressRequest, isFavourite: false);
+
+    var cart = await _dbContext.Cart
+      .Include(c => c.Items)
+      .FirstOrDefaultAsync(c => c.UserId == _userContext.UserId, cancellationToken);
+
+    if (cart is null)
+    {
+      return Result.Failure(Error.Failure("Cart not found", "Error creating order, please try again or contact the support"));
+    }
+
+    return await AddOrder(cart, address, cancellationToken);
   }
 
   private async Task<Result> AddOrder(Cart cart, Address address, CancellationToken cancellationToken)

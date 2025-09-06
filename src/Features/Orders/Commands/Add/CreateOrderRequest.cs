@@ -2,7 +2,7 @@
 
 namespace dotnet_qrshop.Features.Orders.Commands.Add;
 
-public record CreateOrderRequest(int CartId, int? AddressId, BaseAddressRequest AddressRequest)
+public record CreateOrderRequest(int? AddressId, BaseAddressRequest AddressRequest)
 {
-  public static CreateOrderRequest Parse(int cartId, int? addressId, BaseAddressRequest request) => new(cartId, addressId, request);
+  public static CreateOrderRequest Parse(int? addressId, BaseAddressRequest request) => new(addressId, request);
 }

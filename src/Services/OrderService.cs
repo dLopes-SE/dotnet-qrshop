@@ -35,7 +35,7 @@ namespace dotnet_qrshop.Services
           cancellationToken
         );
 
-      return !order;
+      return order;
     }
 
     public async Task<Order> GetPendingOrder(CancellationToken cancellationToken)

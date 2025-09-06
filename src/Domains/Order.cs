@@ -32,6 +32,9 @@ public class Order : BaseEntity
       UserId = cart.UserId,
       Status = OrderStatusEnum.Pending,
 
+      // Will be null for custom addresses (needed for address update)
+      AddressId = address.Id,
+
       FullName = address.FullName,
       Phone = address.Phone,
       Address_line1 = address.Address_line1,
