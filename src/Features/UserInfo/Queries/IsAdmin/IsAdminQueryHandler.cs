@@ -4,7 +4,6 @@ using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Domains;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_qrshop.Features.UserInfo.Queries.IsAdmin;
 

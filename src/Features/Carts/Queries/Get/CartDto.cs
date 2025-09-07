@@ -7,6 +7,6 @@ public record CartDto
   int Quantity,
   double SubTotal,
   bool IsCartChangeAllowed,
-  string orderStatus,
+  string CheckoutStatus,
   IEnumerable<object> Items
 );
