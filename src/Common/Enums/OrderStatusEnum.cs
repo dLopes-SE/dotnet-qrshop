@@ -3,14 +3,15 @@
 // Some of these might not be used in this specific app
 public enum OrderStatusEnum
 {
-  Pending = 0,        // Order placed, awaiting payment confirmation
-  Paying = 1,         // Processing Payment
-  PaymentFailed = 2,  // Payment attempt failed
-  Paid = 3,           // Payment confirmed, not being processed yet
-  Processing = 4,     // Being prepared / packed
-  Shipped = 5,        // Handed over to courier
-  Delivered = 6,      // Customer received the package
-  Cancelled = 7,      // Cancelled before shipping
-  Returned = 8,       // Returned by customer
-  Refunded = 9        // Refund issued
+  None = 0,           // Indicates that there's no 'active' checkout
+  Pending = 1,        // Order placed, awaiting payment confirmation
+  Paying = 2,         // Processing Payment
+  PaymentFailed = 3,  // Payment attempt failed
+  Paid = 4,           // Payment confirmed, not being processed yet
+  Processing = 5,     // Being prepared / packed
+  Shipped = 6,        // Handed over to courier
+  Delivered = 7,      // Customer received the package
+  Cancelled = 8,      // Cancelled before shipping
+  Returned = 9,       // Returned by customer
+  Refunded = 10        // Refund issued
 }

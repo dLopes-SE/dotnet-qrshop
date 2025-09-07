@@ -1,6 +1,7 @@
 ﻿using dotnet_qrshop.Abstractions;
 using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
+using dotnet_qrshop.Common.Enums;
 using dotnet_qrshop.Common.Models;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
@@ -40,12 +41,14 @@ public class GetCartQueryHandler(
       return Result.Failure<CartDto>(Error.Failure("Internal error", "Error getting cart, please try again or contact the support"));
     }
 
+    var checkoutStatus = await _orderService.GetCheckoutStatus(cancellationToken);
     var isCartChangeAllowed = await _orderService.IsCartChangeAllowedAsync(cancellationToken);
 
     return new CartDto(
       cart.TotalQuantity,
       cart.TotalPrice,
-      isCartChangeAllowed,
+      checkoutStatus is not OrderStatusEnum.Paying and not OrderStatusEnum.PaymentFailed,
+      checkoutStatus.ToString(),
       cart.Items
     );
   }

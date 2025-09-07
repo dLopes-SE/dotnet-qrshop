@@ -1,3 +1,12 @@
-﻿namespace dotnet_qrshop.Features.Carts.Queries.Get;
+﻿using dotnet_qrshop.Common.Enums;
 
-public record CartDto(int Quantity, double SubTotal, bool IsCartChangeAllowed, IEnumerable<object> Items);
+namespace dotnet_qrshop.Features.Carts.Queries.Get;
+
+public record CartDto
+(
+  int Quantity,
+  double SubTotal,
+  bool IsCartChangeAllowed,
+  string orderStatus,
+  IEnumerable<object> Items
+);
