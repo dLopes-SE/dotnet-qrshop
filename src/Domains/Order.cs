@@ -57,7 +57,7 @@ public class Order : BaseEntity
   #endregion
 
   #region address
-  public void UpdateAddress(BaseAddressRequest address)
+  public void UpdateAddress(BaseAddress address)
   {
     FullName = address.FullName;
     Phone = address.PhoneNumber;

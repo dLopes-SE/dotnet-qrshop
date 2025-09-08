@@ -44,7 +44,7 @@ namespace dotnet_qrshop.Domains
       IsFavourite = isFavourite;
     }
 
-    public static Address Parse(BaseAddressRequest request, bool isFavourite) =>
+    public static Address Parse(BaseAddress request, bool isFavourite) =>
       new
       (
         request.FullName,

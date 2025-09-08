@@ -66,7 +66,7 @@ public class CreateOrderCommandHandler(
     return await AddOrder(cartAddress.Cart, cartAddress.Address, cancellationToken);
   }
 
-  private async Task<Result> AddCustomAddressOrder(BaseAddressRequest addressRequest, CancellationToken cancellationToken)
+  private async Task<Result> AddCustomAddressOrder(BaseAddress addressRequest, CancellationToken cancellationToken)
   {
     if (addressRequest is null)
     {

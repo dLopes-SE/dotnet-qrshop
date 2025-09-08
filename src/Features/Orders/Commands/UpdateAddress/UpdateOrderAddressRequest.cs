@@ -2,4 +2,4 @@
 
 namespace dotnet_qrshop.Features.Orders.Commands.UpdateAddress;
 
-public sealed record UpdateOrderAddressRequest(BaseAddressRequest Address, int? AddressId);
+public sealed record UpdateOrderAddressRequest(BaseAddress Address, int? AddressId);

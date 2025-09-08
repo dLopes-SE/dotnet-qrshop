@@ -2,4 +2,4 @@
 
 namespace dotnet_qrshop.Features.Addresses.Commands;
 
-public record AddAddressRequest (BaseAddressRequest Address, bool IsFavourite);
+public record AddAddressRequest (BaseAddress Address, bool IsFavourite);

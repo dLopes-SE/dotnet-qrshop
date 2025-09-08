@@ -2,7 +2,7 @@
 
 namespace dotnet_qrshop.Features.Common;
 
-public class BaseAddressValidator : AbstractValidator<BaseAddressRequest>
+public class BaseAddressValidator : AbstractValidator<BaseAddress>
 {
   public BaseAddressValidator()
   {

@@ -1,6 +1,6 @@
 ﻿namespace dotnet_qrshop.Features.Common
 {
-  public record BaseAddressRequest(
+  public record BaseAddress(
     string FullName,
     string PhoneNumber,
     string AddressLine1,
