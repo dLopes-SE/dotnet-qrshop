@@ -53,7 +53,7 @@ public class Order : BaseEntity
   #region items
   public void AddItem(CartItem item) => _items.Add((OrderItem)item);
   public void UpdateItem(int itemId, int quantity) => _items.FirstOrDefault(oi => oi.ItemId == itemId)?.UpdateQuantity(quantity);
-  public void RemoveItem(int itemId) => _items.RemoveAll(oi => oi.ItemId == itemId);
+  public void RemoveItem(int id) => _items.RemoveAll(oi => oi.Id == id);
   #endregion
 
   #region address

@@ -9,7 +9,7 @@ public class GetCheckoutEndpoint : ICarterModule
 {
   public void AddRoutes(IEndpointRouteBuilder app)
   {
-    app.MapGet("orders/checkout", async (
+    app.MapGet("order/checkout", async (
       IQueryHandler<GetCheckoutQuery, CheckoutDto> handler,
       CancellationToken cancellationToken) =>
     {

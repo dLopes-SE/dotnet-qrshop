@@ -16,6 +16,7 @@ public class GetCheckoutQueryHandler(
     var checkout = await _dbContext.Orders
       .AsNoTracking()
       .Include(o => o.Items)
+        .ThenInclude(oi => oi.Item)
       .FirstOrDefaultAsync(o => o.Status == OrderStatusEnum.Pending, cancellationToken);
 
     if (checkout is null)
