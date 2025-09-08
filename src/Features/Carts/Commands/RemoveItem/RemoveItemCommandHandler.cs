@@ -39,7 +39,7 @@ public class RemoveItemCommandHandler(
     cart.RemoveItem(cart.Items.FirstOrDefault(i =>  i.Id == command.CartItemId));
 
     // Remove from order (if exists)
-    (await _orderService.GetPendingOrder(cancellationToken))?.RemoveItem(command.CartItemId);
+    (await _orderService.GetPendingOrderWithItems(cancellationToken))?.RemoveItem(command.CartItemId);
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)

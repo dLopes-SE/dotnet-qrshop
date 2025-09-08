@@ -38,10 +38,10 @@ public class OrderService(
     return order;
   }
 
-  public async Task<Order> GetPendingOrder(CancellationToken cancellationToken)
+  public async Task<Order> GetPendingOrderWithItems(CancellationToken cancellationToken)
   {
     return await _dbContext.Orders
-      .AsNoTracking()
+      .Include(o => o.Items)
       .FirstOrDefaultAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
   }
 

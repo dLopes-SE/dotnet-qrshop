@@ -32,7 +32,7 @@ public class AddCartItemCommandHandler(
     cart.AddItem(cartItem);
 
     // Add to order (if exists)
-    (await _orderService.GetPendingOrder(cancellationToken))?.AddItem(cartItem);
+    (await _orderService.GetPendingOrderWithItems(cancellationToken))?.AddItem(cartItem);
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
     if (result <= 0)

@@ -39,7 +39,7 @@ public class UpdateCartItemCommandHandler(
     cart.UpdateItem(command.CartItem.Id ?? 0, command.CartItem.Quantity);
 
     // Update order (if exists)
-    (await _orderService.GetPendingOrder(cancellationToken))?
+    (await _orderService.GetPendingOrderWithItems(cancellationToken))?
       .UpdateItem(cart.Items.FirstOrDefault(i => i.Id == command.CartItem.Id)?.ItemId ?? 0, command.CartItem.Quantity);
 
     var result = await _dbContext.SaveChangesAsync(cancellationToken);
