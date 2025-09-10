@@ -17,7 +17,7 @@ public class GetCheckoutQueryHandler(
       .AsNoTracking()
       .Include(o => o.Items)
         .ThenInclude(oi => oi.Item)
-      .FirstOrDefaultAsync(o => o.Status == OrderStatusEnum.Pending, cancellationToken);
+      .FirstOrDefaultAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
 
     if (checkout is null)
     {
