@@ -34,7 +34,7 @@ public class UpdateOrderAddressCommandHandler
     {
       var address = await _dbContext.Addresses
         .AsNoTracking()
-        .FirstOrDefaultAsync(a => a.Id == command.Request.AddressId);
+        .FirstOrDefaultAsync(a => a.Id == command.Request.AddressId, cancellationToken);
 
       if (address is null)
       {

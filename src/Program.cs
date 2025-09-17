@@ -82,6 +82,7 @@ builder.Services.AddScoped<ITokenProvider, TokenProvider>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IPaymentService, StripePaymentService>();
 
 builder.Services.AddCors(options =>
 {
@@ -115,6 +116,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapCarter();
-
 
 app.Run();
