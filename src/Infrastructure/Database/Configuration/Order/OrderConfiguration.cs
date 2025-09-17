@@ -56,5 +56,9 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domains.Order>
 
     builder.HasMany(o => o.Items)
       .WithOne(oi => oi.Order);
+
+    builder.HasIndex(o => o.UserId)
+      .IsUnique()
+      .HasFilter("State_or_Province = 1");
   }
 }

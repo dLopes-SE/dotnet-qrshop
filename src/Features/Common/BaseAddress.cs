@@ -1,5 +1,4 @@
 ﻿using dotnet_qrshop.Domains;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace dotnet_qrshop.Features.Common;
 
@@ -24,5 +23,18 @@ public record BaseAddress(
       order.City,
       order.State_or_Province,
       order.Country
+    );
+
+  public static explicit operator BaseAddress(Address address) =>
+    new
+    (
+      address.FullName,
+      address.Phone,
+      address.Address_line1,
+      address.Address_line2,
+      address.PostalCode,
+      address.City,
+      address.State_or_Province,
+      address.Country
     );
 }

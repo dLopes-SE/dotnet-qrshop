@@ -7,7 +7,7 @@ public class UpdateOrderAddressValidator : AbstractValidator<UpdateOrderAddressC
 {
   public UpdateOrderAddressValidator()
   {
-    RuleFor(r => r.Request.Address)
+    RuleFor(r => r.Request.AddressRequest)
       .SetValidator(new BaseAddressValidator());
   }
 }
