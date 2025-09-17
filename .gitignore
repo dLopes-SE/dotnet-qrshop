@@ -79,3 +79,4 @@ out/
 # .NET 9 specific runtime files
 *runtimeconfig.json
 *runtimeconfig.dev.json
+/src/appsettings.Development.json
