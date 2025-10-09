@@ -12,7 +12,7 @@ using dotnet_qrshop.Infrastructure.Database.DbContext;
 namespace dotnet_qrshop.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250905080853_initial")]
+    [Migration("20251009114339_initial")]
     partial class initial
     {
         /// <inheritdoc />

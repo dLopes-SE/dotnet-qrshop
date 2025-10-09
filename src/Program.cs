@@ -98,6 +98,13 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// Run migrations on startup (we need to ensure that db's up)
+using (var scope = app.Services.CreateScope())
+{
+  var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+  db.Database.Migrate(); // Applies any pending migrations
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
