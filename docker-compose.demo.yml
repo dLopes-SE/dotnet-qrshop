@@ -7,9 +7,6 @@ networks:
   qrshop-network:
 
 services:
-  # -----------------
-  # Postgres DB
-  # -----------------
   db:
     image: postgres:15
     container_name: qrshop-db
@@ -21,47 +18,32 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
-      interval: 3s
-      timeout: 5s
-      retries: 10
     networks:
       - qrshop-network
 
-  # -----------------
-  # .NET Backend
-  # -----------------
   backend:
-    build:
-      context: ./src
-      dockerfile: Dockerfile
-    container_name: qrshop-backend
+    image: ghcr.io/dlopes-se/dotnet-qrshop:latest
+    container_name: dotnet-qrshop
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:5000
-      HTTP_PORTS: 5000          # prevents warning
-      JwtSettings__Key: ${JWT_SECRET_KEY:-19492ac5-15a8-471e-8fde-af76f5996c0a}
-      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      JwtSettings__Key: ${JWT_SECRET_KEY:-demo-secret}
       ConnectionStrings__Database: "Host=db;Port=5432;Database=${POSTGRES_DB:-qrshop};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
+      StripeApiKey: ${STRIPE_SECRET_KEY:-}
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     ports:
       - "5000:5000"
     networks:
       - qrshop-network
 
-  # -----------------
-  # Next.js Frontend
-  # -----------------
   frontend:
     image: ghcr.io/dlopes-se/nextjs-qrshop-public:latest
     container_name: qrshop-frontend
     environment:
       NEXTAUTH_URL: http://localhost:3000
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-demo-secret}  # runtime secret
-      INTERNAL_API_URL: http://backend:5000           # server-side inside Docker
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-demo-secret} # runtime secret
+      INTERNAL_API_URL: http://backend:5000 # server-side inside Docker
     ports:
       - "3000:3000"
     depends_on:
