@@ -27,7 +27,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:5000
-      JwtSettings__Key: ${JWT_SECRET_KEY:-my-super-secret-key-1234}
+      JwtSettings__Key: ${JWT_SECRET_KEY:-my-super-secret-key-abcdefghijkl}
       ConnectionStrings__Database: "Host=db;Port=5432;Database=${POSTGRES_DB:-qrshop};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
       StripeApiKey: ${STRIPE_SECRET_KEY:-}
     depends_on:
@@ -49,4 +49,5 @@ services:
     depends_on:
       - backend
     networks:
+
       - qrshop-network
