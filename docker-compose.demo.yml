@@ -27,7 +27,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:5000
-      JwtSettings__Key: ${JWT_SECRET_KEY:-demo-secret}
+      JwtSettings__Key: ${JWT_SECRET_KEY:-my-super-secret-key-1234}
       ConnectionStrings__Database: "Host=db;Port=5432;Database=${POSTGRES_DB:-qrshop};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
       StripeApiKey: ${STRIPE_SECRET_KEY:-}
     depends_on:
@@ -42,7 +42,7 @@ services:
     container_name: qrshop-frontend
     environment:
       NEXTAUTH_URL: http://localhost:3000
-      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-demo-secret} # runtime secret
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:-my-super-secret-key-1234} # runtime secret
       INTERNAL_API_URL: http://backend:5000 # server-side inside Docker
     ports:
       - "3000:3000"
