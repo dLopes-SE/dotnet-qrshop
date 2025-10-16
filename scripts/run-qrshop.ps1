@@ -1,12 +1,13 @@
-# -----------------------------------------------------
+# =====================================================
 # 🚀 QRShop Remote Launcher (Always Pull Latest)
-# -----------------------------------------------------
+# =====================================================
 
 # -----------------------------------------------------
-# Parameters
+# Parameters (optional)
 # -----------------------------------------------------
 param(
-    [string]$StripeSecretKey = ""
+    [string]$StripeSecretKey = "",
+    [string]$StripePublishableKey = ""
 )
 
 # -----------------------------------------------------
@@ -32,7 +33,6 @@ function Check-Command {
 
 Check-Command -Cmd "docker" -Name "Docker"
 
-# Docker Compose v2 is part of Docker CLI
 try {
     docker compose version | Out-Null
 } catch {
@@ -45,10 +45,15 @@ Write-Host "✅ Docker and Compose detected."
 Write-Host ""
 
 # -----------------------------------------------------
-# 💳 Ask for optional Stripe key if not provided
+# 💳 Ask for optional Stripe backend secret if not provided
 # -----------------------------------------------------
 if (-not $StripeSecretKey) {
-    $StripeSecretKey = Read-Host "💳 Enter Stripe Secret Key (or press Enter to skip)"
+    $StripeSecretKey = Read-Host "💳 Enter Stripe Secret Key (backend, optional, press Enter to skip)"
+}
+
+# 💳 Ask for optional Next.js Stripe publishable key if not provided
+if (-not $StripePublishableKey) {
+    $StripePublishableKey = Read-Host "💳 Enter Stripe Publishable Key (frontend, optional, press Enter to skip)"
 }
 
 # -----------------------------------------------------
@@ -64,18 +69,20 @@ Write-Host ""
 Write-Host "🐳 Pulling latest images and starting containers..."
 Write-Host ""
 
-# Set environment variable for Docker Compose
+# Set environment variables for Docker Compose
 $env:STRIPE_SECRET_KEY = $StripeSecretKey
+$env:NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY = $StripePublishableKey
 
-# Use a "null" env file so Docker Compose doesn’t complain
-if ($IsWindows) {
-    $nullEnv = [System.IO.Path]::GetTempFileName()
-    docker compose --env-file $nullEnv -f $tmpComposeFile pull
-    docker compose --env-file $nullEnv -f $tmpComposeFile up -d
-    Remove-Item $nullEnv
-} else {
-    docker compose --env-file /dev/null -f $tmpComposeFile pull
-    docker compose --env-file /dev/null -f $tmpComposeFile up -d
+try {
+    # Pull latest images
+    docker compose -f $tmpComposeFile pull
+
+    # Start containers
+    docker compose -f $tmpComposeFile up -d
+} catch {
+    Write-Error "❌ Docker Compose failed. QRShop is NOT running."
+    Remove-Item $tmpComposeFile
+    exit 1
 }
 
 # -----------------------------------------------------
@@ -84,7 +91,7 @@ if ($IsWindows) {
 Remove-Item $tmpComposeFile
 
 # -----------------------------------------------------
-# ✅ Done
+# ✅ Success
 # -----------------------------------------------------
 Write-Host ""
 Write-Host "✅ QRShop is up and running!"
