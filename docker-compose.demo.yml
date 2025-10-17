@@ -18,6 +18,11 @@ services:
       - "5432:5432"
     volumes:
       - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
     networks:
       - qrshop-network
 
@@ -31,7 +36,8 @@ services:
       ConnectionStrings__Database: "Host=db;Port=5432;Database=${POSTGRES_DB:-qrshop};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}"
       StripeApiKey: ${STRIPE_SECRET_KEY:-}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "5000:5000"
     networks:
@@ -51,3 +57,4 @@ services:
     networks:
 
       - qrshop-network
+
