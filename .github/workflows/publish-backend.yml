@@ -33,3 +33,15 @@ jobs:
           tags: |
             ghcr.io/dlopes-se/dotnet-qrshop:latest
             ghcr.io/dlopes-se/dotnet-qrshop:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.description=Public .NET Backend for QRShop Demo
+
+      - name: Set image visibility to public
+        run: |
+          curl -L \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" \
+            https://api.github.com/user/packages/container/dotnet-qrshop/visibility \
+            -d '{"visibility":"public"}'
