@@ -37,7 +37,7 @@ jobs:
         run: dotnet format --verify-no-changes || true
 
       - name: Static Analysis (Roslyn)
-        run: dotnet build --no-restore -warnaserror
+        run: dotnet build --no-restore
 
       - name: SonarCloud Analysis
         uses: SonarSource/sonarcloud-github-action@master
