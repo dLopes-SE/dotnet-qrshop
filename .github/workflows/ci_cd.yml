@@ -1,0 +1,139 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  # =========================
+  # 🧱 1. BUILD JOB
+  # =========================
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+
+      - name: Lint Code
+        run: dotnet format --verify-no-changes || true
+
+      - name: Static Analysis (Roslyn)
+        run: dotnet build --no-restore -warnaserror
+
+      - name: SonarCloud Analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          args: >
+           -Dsonar.projectKey=dlopes-se_dotnet-qrshop
+            -Dsonar.organization=dlopes-se
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: |
+            **/bin/Release/
+            **/obj/project.assets.json
+
+  # =========================
+  # 🧪 2. TEST JOB
+  # =========================
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: .
+
+      - name: Run Tests
+        run: dotnet test --no-build --verbosity normal
+
+      - name: Check for vulnerable dependencies
+        run: dotnet list package --vulnerable
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: TestResults/
+
+  # =========================
+  # 🐳 3. PUBLISH JOB
+  # =========================
+  publish:
+    name: Build and Publish Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_PAT }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src
+          file: ./src/Dockerfile
+          push: true
+          tags: |
+            ghcr.io/dlopes-se/dotnet-qrshop:latest
+            ghcr.io/dlopes-se/dotnet-qrshop:${{ github.sha }}
+          labels: |
+            org.opencontainers.image.source=${{ github.repository }}
+            org.opencontainers.image.description=Public .NET Backend for QRShop Demo
+
+      - name: Set image visibility to public
+        run: |
+          curl -s -L \
+            -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${{ secrets.GHCR_PAT }}" \
+            https://api.github.com/user/packages/container/dotnet-qrshop/visibility \
+            -d '{"visibility":"public"}'
+
+      - name: Output Image Tag
+        run: echo "Docker image built and published ✅"
