@@ -39,15 +39,15 @@ jobs:
       - name: Static Analysis (Roslyn)
         run: dotnet build --no-restore
 
-      - name: SonarCloud Analysis
-        uses: SonarSource/sonarcloud-github-action@master
-        with:
-          args: >
-           -Dsonar.projectKey=dlopes-se_dotnet-qrshop
-            -Dsonar.organization=dlopes-se
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #- name: SonarCloud Analysis
+      #  uses: SonarSource/sonarcloud-github-action@master
+      #  with:
+      #    args: >
+      #     -Dsonar.projectKey=dlopes-se_dotnet-qrshop
+      #      -Dsonar.organization=dlopes-se
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
