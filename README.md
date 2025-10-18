@@ -25,7 +25,7 @@ The project is still **in active development**, with multiple open issues reflec
 
 ## ⚙️ Tech Stack
 
-- **.NET 8 / C#**
+- **.NET 9 / C#**
 - **Entity Framework Core** — ORM and migrations  
 - **PostgreSQL** — primary database  
 - **Docker & Docker Compose** — containerization and local orchestration  
@@ -126,4 +126,5 @@ This part of the document describes some ideas for features and business rules f
   - Role-based or user-segment targeting.
   - Percentage rollouts (canary releases).
   - Audit log of feature flag changes.
+
 
