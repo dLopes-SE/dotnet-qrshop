@@ -73,7 +73,7 @@ powershell -ExecutionPolicy Bypass -Command "iwr -useb https://raw.githubusercon
 
 **macOS / Linux:**
 ```
-bash <(curl -fsSL https://raw.githubusercontent.com/dlopes-se/dotnet-qrshop/main/scripts/run-qrshop.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/dlopes-se/dotnet-qrshop/main/scripts/run-qrshop.sh) (not tested)
 ```
 
 These scripts automatically download and run the latest Docker image published by the CI/CD pipeline.
@@ -126,5 +126,6 @@ This part of the document describes some ideas for features and business rules f
   - Role-based or user-segment targeting.
   - Percentage rollouts (canary releases).
   - Audit log of feature flag changes.
+
 
 
