@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Stripe;
 using System.Reflection;
 using System.Text;
 
@@ -76,6 +77,11 @@ builder.Services.AddAuthentication(options =>
 // Authorization
 builder.Services.AddAuthorization();
 
+// Stripe
+StripeConfiguration.ApiKey = builder.Configuration["StripeApiKey"];
+
+// Remaining Services
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IUserContext, UserContext>();
 builder.Services.AddScoped<ITokenProvider, TokenProvider>();
@@ -84,6 +90,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPaymentService, StripePaymentService>();
 
+// CORS
 builder.Services.AddCors(options =>
 {
   options.AddPolicy("AllowAll", policy =>
@@ -96,6 +103,7 @@ builder.Services.AddCors(options =>
   });
 });
 
+// 
 var app = builder.Build();
 
 // Run migrations on startup (we need to ensure that db's up)
