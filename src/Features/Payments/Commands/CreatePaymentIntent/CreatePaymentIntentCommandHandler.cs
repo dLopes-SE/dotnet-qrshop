@@ -4,7 +4,6 @@ using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Enums;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
-using dotnet_qrshop.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace dotnet_qrshop.Features.Payments.Commands.CreatePaymentIntent;
@@ -18,14 +17,14 @@ public class CreatePaymentIntentCommandHandler(
   {
     var orderInfo = await _dbContext.Orders
       .AsNoTracking()
-      .Where(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending)
+      .Where(o => o.UserId == _userContext.UserId && o.Id == command.OrderId)
       .Select(o => new {
-        o.Id,
+        o.Status,
         TotalPrice = o.Items.Sum(oi => oi.Quantity * oi.Item.Price)
       })
       .FirstOrDefaultAsync(cancellationToken);
 
-    if (orderInfo is null)
+    if (orderInfo is null || orderInfo.Status is not OrderStatusEnum.Pending)
     {
       return Result.Failure<string>(Error.Problem("No pending checkout", "Error processing payment, please try again or contact the support"));
     }
@@ -35,6 +34,6 @@ public class CreatePaymentIntentCommandHandler(
       return Result.Failure<string>(Error.Problem("No items in the checkout", "Error processing payment, please try again or contact the support"));
     }
 
-    return await _paymentService.CreatePaymentIntentAsync(orderInfo.Id, (decimal) orderInfo.TotalPrice, cancellationToken);
+    return await _paymentService.CreatePaymentIntentAsync(command.OrderId, (decimal) orderInfo.TotalPrice, cancellationToken);
   }
 }

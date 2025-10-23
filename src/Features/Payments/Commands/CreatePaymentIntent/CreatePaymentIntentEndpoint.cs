@@ -14,7 +14,7 @@ public class CreatePaymentIntentEndpoint : ICarterModule
       ICommandHandler<CreatePaymentIntentCommand, string> handler,
       CancellationToken cancellationToken) =>
     {
-      var result = await handler.Handle(new CreatePaymentIntentCommand(), cancellationToken);
+      var result = await handler.Handle(new CreatePaymentIntentCommand(orderId), cancellationToken);
 
       return result.Match(Results.Ok, CustomResults.Problem);
     })
