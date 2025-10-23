@@ -9,7 +9,8 @@ public class CreatePaymentIntentEndpoint : ICarterModule
 {
   public void AddRoutes(IEndpointRouteBuilder app)
   {
-    app.MapPost("payment", async (
+    app.MapPost("orders/{orderId}/payment-intents", async (
+      int orderId,
       ICommandHandler<CreatePaymentIntentCommand, string> handler,
       CancellationToken cancellationToken) =>
     {
