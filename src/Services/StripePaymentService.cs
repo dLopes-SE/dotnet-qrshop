@@ -1,5 +1,6 @@
 ﻿using dotnet_qrshop.Abstractions;
 using dotnet_qrshop.Features.Payments.Webhook;
+using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Stripe;
 
 namespace dotnet_qrshop.Services;
@@ -8,11 +9,13 @@ public class StripePaymentService : IPaymentService
 {
   private readonly string _apiSecretKey;
   private readonly string _webhookSecret;
+  private readonly ApplicationDbContext _dbContext;
 
-  public StripePaymentService(IConfiguration configuration)
+  public StripePaymentService(IConfiguration configuration, ApplicationDbContext dbContext)
   {
     _apiSecretKey = configuration["Stripe:SecretKey"] ?? throw new InvalidOperationException("Stripe Api secret not configured.");
     _webhookSecret = configuration["Stripe:WebhookSecret"] ?? throw new InvalidOperationException("Stripe Webhook secret not configured.");
+    _dbContext = dbContext;
   }
 
   public async Task<string> CreatePaymentIntentAsync(int orderId, decimal amount, CancellationToken cancellationToken)
@@ -42,7 +45,8 @@ public class StripePaymentService : IPaymentService
       stripeEvent = EventUtility.ConstructEvent(
         json,
         request.Headers["Stripe-Signature"],
-        _webhookSecret
+        _webhookSecret,
+        throwOnApiVersionMismatch: false
       );
     }
     catch (StripeException e)

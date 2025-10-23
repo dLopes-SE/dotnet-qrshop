@@ -6,7 +6,7 @@ public static class StripeEventTypeParser
   {
     return eventType switch
     {
-      "checkout.session.completed" => StripeEventType.CheckoutSessionCompleted,
+      "payment_intent.succeeded" => StripeEventType.CheckoutSessionCompleted,
       "payment_intent.payment_failed" => StripeEventType.PaymentIntentPaymentFailed,
       _ => StripeEventType.Unknown
     };
