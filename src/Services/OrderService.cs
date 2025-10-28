@@ -28,8 +28,8 @@ public class OrderService(
       .AnyAsync(
         o => o.UserId == _userContext.UserId &&
           (
-            o.Status == OrderStatusEnum.Pending
-            || o.Status == OrderStatusEnum.Paying
+            o.Status == OrderStatusEnum.CheckoutPending
+            || o.Status == OrderStatusEnum.PaymentProcessing
             || o.Status == OrderStatusEnum.PaymentFailed
           ),
         cancellationToken
@@ -42,7 +42,7 @@ public class OrderService(
   {
     return await _dbContext.Orders
       .Include(o => o.Items)
-      .FirstOrDefaultAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.Pending, cancellationToken);
+      .FirstOrDefaultAsync(o => o.UserId == _userContext.UserId && o.Status == OrderStatusEnum.CheckoutPending, cancellationToken);
   }
 
   public async Task<Order> GetPendingOrder(CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ public class OrderService(
       .FirstOrDefaultAsync
       (
         o => o.UserId == _userContext.UserId
-        && o.Status == OrderStatusEnum.Pending,
+        && o.Status == OrderStatusEnum.CheckoutPending,
         cancellationToken
       );
   }
@@ -62,7 +62,7 @@ public class OrderService(
       .FirstOrDefaultAsync
       (
         o => o.UserId == _userContext.UserId
-        && o.Status == OrderStatusEnum.Pending,
+        && o.Status == OrderStatusEnum.CheckoutPending,
         cancellationToken
       );
   }
@@ -73,7 +73,7 @@ public class OrderService(
     .AsNoTracking()
     .Where(c =>
         c.User.Id == _userContext.UserId &&
-        new[] { OrderStatusEnum.Pending, OrderStatusEnum.Paying, OrderStatusEnum.PaymentFailed }.Contains(c.Status))
+        new[] { OrderStatusEnum.CheckoutPending, OrderStatusEnum.PaymentProcessing, OrderStatusEnum.PaymentFailed }.Contains(c.Status))
     .Select(c => (OrderStatusEnum?)c.Status)
     .FirstOrDefaultAsync(cancellationToken);
 
@@ -87,7 +87,7 @@ public class OrderService(
       .AsNoTracking()
       .AnyAsync(
         o => o.UserId == _userContext.UserId &&
-          (o.Status == OrderStatusEnum.Paying
+          (o.Status == OrderStatusEnum.PaymentProcessing
             || o.Status == OrderStatusEnum.PaymentFailed
           ),
         cancellationToken

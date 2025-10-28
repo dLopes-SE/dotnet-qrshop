@@ -48,7 +48,7 @@ public class GetCartQueryHandler(
     return new CartDto(
       cart.TotalQuantity,
       cart.TotalPrice,
-      checkoutStatus is not OrderStatusEnum.Paying and not OrderStatusEnum.PaymentFailed,
+      checkoutStatus is not OrderStatusEnum.PaymentProcessing and not OrderStatusEnum.PaymentFailed,
       checkoutStatus.ToString(),
       cart.Items
     );

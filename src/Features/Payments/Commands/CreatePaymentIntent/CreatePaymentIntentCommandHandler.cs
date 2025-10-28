@@ -24,7 +24,7 @@ public class CreatePaymentIntentCommandHandler(
       })
       .FirstOrDefaultAsync(cancellationToken);
 
-    if (orderInfo is null || orderInfo.Status is not OrderStatusEnum.Pending)
+    if (orderInfo is null || orderInfo.Status is not OrderStatusEnum.CheckoutPending)
     {
       return Result.Failure<string>(Error.Problem("No pending checkout", "Error processing payment, please try again or contact the support"));
     }

@@ -30,7 +30,7 @@ public class Order : BaseEntity
     var order = new Order()
     {
       UserId = cart.UserId,
-      Status = OrderStatusEnum.Pending,
+      Status = OrderStatusEnum.CheckoutPending,
 
       // Will be null for custom addresses (needed for address update)
       AddressId = address.Id,
