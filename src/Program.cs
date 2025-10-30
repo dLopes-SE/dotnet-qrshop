@@ -3,6 +3,7 @@ using dotnet_qrshop.Abstractions;
 using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Behaviours;
+using dotnet_qrshop.Common.Extensions;
 using dotnet_qrshop.Common.Models.Identity;
 using dotnet_qrshop.Domains;
 using dotnet_qrshop.Features.Identity;
@@ -77,6 +78,9 @@ builder.Services.AddAuthentication(options =>
 // Authorization
 builder.Services.AddAuthorization();
 
+// Redis && Redlock
+builder.AddRedisServices();
+
 // Stripe
 StripeConfiguration.ApiKey = builder.Configuration["StripeApiKey"];
 
@@ -136,3 +140,5 @@ app.UseAuthorization();
 app.MapCarter();
 
 app.Run();
+
+

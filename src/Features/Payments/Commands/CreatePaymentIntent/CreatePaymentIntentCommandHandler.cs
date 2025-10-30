@@ -2,19 +2,32 @@
 using dotnet_qrshop.Abstractions.Authentication;
 using dotnet_qrshop.Abstractions.Messaging;
 using dotnet_qrshop.Common.Enums;
+using dotnet_qrshop.Common.Models;
 using dotnet_qrshop.Common.Results;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using RedLockNet;
 
 namespace dotnet_qrshop.Features.Payments.Commands.CreatePaymentIntent;
 
 public class CreatePaymentIntentCommandHandler(
   ApplicationDbContext _dbContext,
   IUserContext _userContext,
-  IPaymentService _paymentService) : ICommandHandler<CreatePaymentIntentCommand, string>
+  IPaymentService _paymentService,
+  IDistributedLockFactory _lockFactory,
+  IOptions<RedlockSettings> redlockOptions) : ICommandHandler<CreatePaymentIntentCommand, string>
 {
+  private readonly RedlockSettings _lockSettings = redlockOptions.Value;
   public async Task<Result<string>> Handle(CreatePaymentIntentCommand command, CancellationToken cancellationToken)
   {
+    using var redlock = await _lockFactory.CreateLockAsync("test", _lockSettings.Expiry, _lockSettings.Wait, _lockSettings.Retry);
+    if (!redlock.IsAcquired)
+    {
+      // TODO DYLAN: LOG here
+      return Result.Failure<string>(Error.Conflict("Couldn't create payment intent", "Error processing payment, please try again or contact the support"));
+    }
+
     var orderInfo = await _dbContext.Orders
       .AsNoTracking()
       .Where(o => o.UserId == _userContext.UserId && o.Id == command.OrderId)
