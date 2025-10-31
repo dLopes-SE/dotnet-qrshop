@@ -50,6 +50,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Domains.Order>
     builder.Property(o => o.Country)
         .HasMaxLength(2);
 
+    builder.Property<string>("_PaymentIntentId")
+      .HasColumnName("PaymentIntentId")
+      .HasMaxLength(100)
+      .IsUnicode(false);
+
     builder.HasOne(o => o.User)
       .WithOne()
       .HasForeignKey<Domains.Order>(o => o.UserId);

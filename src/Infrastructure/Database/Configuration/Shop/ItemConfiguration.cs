@@ -32,6 +32,7 @@ public class ItemConfiguration : IEntityTypeConfiguration<Item>
 
     builder.Property(i => i.Price)
       .IsRequired()
+      .HasPrecision(18, 2)
       .HasColumnName("price_in_dollars");
 
     builder.Property(i => i.IsFeaturedItem)

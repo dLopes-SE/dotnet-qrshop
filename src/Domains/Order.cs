@@ -22,6 +22,9 @@ public class Order : BaseEntity
   public string City { get; set; }
   public string State_or_Province { get; set; }
   public string Country { get; set; }
+  private string _PaymentIntentId = string.Empty;
+  public string PaymentIntentId => _PaymentIntentId;
+
 
   public Order() { }
 
@@ -67,6 +70,23 @@ public class Order : BaseEntity
     City = address.City;
     State_or_Province = address.State;
     Country = address.Country;
+  }
+  #endregion
+  #region PaymentIntentId
+  public void SetPaymentIntent(string paymentIntentId)
+  {
+    if (string.IsNullOrWhiteSpace(paymentIntentId))
+      throw new ArgumentException("PaymentIntent ID cannot be empty.", nameof(paymentIntentId));
+
+    if (!string.IsNullOrEmpty(_PaymentIntentId))
+      throw new InvalidOperationException("PaymentIntent ID already set for this order.");
+
+    _PaymentIntentId = paymentIntentId;
+  }
+
+  public void ClearPaymentIntent()
+  {
+    _PaymentIntentId = string.Empty;
   }
   #endregion
 }

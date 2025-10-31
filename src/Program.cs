@@ -10,6 +10,7 @@ using dotnet_qrshop.Features.Identity;
 using dotnet_qrshop.Infrastructure.Authentication;
 using dotnet_qrshop.Infrastructure.Database.DbContext;
 using dotnet_qrshop.Services;
+using dotnet_qrshop.Services.Stripe;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
